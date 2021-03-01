@@ -60,7 +60,7 @@ STAGE2=build/stage2_eltorito
 GENISOIMAGE=genisoimage
 
 ISO=build/mandelbrotos.iso
-QEMU=qemu-system-x86_64 -cdrom $(ISO)
+QEMU=qemu-system-x86_64 -cdrom $(ISO) -serial stdio
 
 .PHONY: all build clean qemu
 

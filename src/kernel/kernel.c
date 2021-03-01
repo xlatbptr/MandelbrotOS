@@ -16,8 +16,11 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
+#include "kernel/serial.h"
 
 int kernel_main(unsigned long magic, unsigned long addr) {
+  init_serial();
+  
   inited_funs_no = 0;
   multiboot_info_t *mbi = (multiboot_info_t *)addr;
 
@@ -37,6 +40,8 @@ int kernel_main(unsigned long magic, unsigned long addr) {
   init_check(kbd_init(), "Keyboard", true);
 
   printf("\r\n");
+
+  serial_writestring("hello from serial!\r\n");
 
   kshell(mbi, magic);
 

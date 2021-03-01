@@ -12,7 +12,6 @@ const char *inited_funcs[50];
 
 void init_check(int func, char *name, bool ness) {
   printf("Initing %s", name);
-
   if (func == 0) {
     // x = fb_width - 54;
     x = fb_width - ((GLYPH_WIDTH + 1) * 6) - 2;
