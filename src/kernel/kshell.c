@@ -162,6 +162,17 @@ int kshell(multiboot_info_t *mbi, unsigned long magic) {
       sysfetch();
     } else if (check_cmd("reboot")) {
       reboot();
+    } else if (check_cmd("echo")){
+      if(argc <= 0){
+        pass;
+      }
+      else{
+        for(int i = 1; i < argc; i++){
+          printf(argv[i]);
+          printf(" ");
+        }
+        printf("\r\n");
+      }
     } else if (check_cmd(0)) {
       pass;
     } else {
