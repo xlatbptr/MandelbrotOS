@@ -5,9 +5,9 @@ RUNONDONE?=1
 GRUB?=0
 
 ifeq ($(GRUB), 1)
-	GRUB_MKRESCUE?=grub2-mkrescue
+	GRUB_MKRESCUE=grub2-mkrescue
 else
-	GRUB_MKRESCUE?=grub-mkrescue
+	GRUB_MKRESCUE=grub-mkrescue
 endif
 
 ifeq ($(LLVM), 1)
