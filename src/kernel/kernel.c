@@ -1,3 +1,4 @@
+#include "kernel/serial.h"
 #include <font.h>
 #include <kernel/alloc.h>
 #include <kernel/gdt.h>
@@ -16,11 +17,10 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <string.h>
-#include "kernel/serial.h"
 
 int kernel_main(unsigned long magic, unsigned long addr) {
   init_serial();
-  
+
   inited_funs_no = 0;
   multiboot_info_t *mbi = (multiboot_info_t *)addr;
 

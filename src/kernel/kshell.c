@@ -36,13 +36,13 @@ void sysfetch() {
          KERNEL_NAME, KERNEL_VERS, KENREL_DATE, KERNEL_TIME, hr, min, sec,
          get_model());
 
-  #ifdef __clang__
-    printf("Compiler version: clang %d.%d.%d\r\n", __clang_major__, __clang_minor__,
-         __clang_patchlevel__);
-  #else
-    printf("Compiler version: gcc %d.%d.%d\r\n", __GNUC__, __GNUC_MINOR__,
+#ifdef __clang__
+  printf("Compiler version: clang %d.%d.%d\r\n", __clang_major__,
+         __clang_minor__, __clang_patchlevel__);
+#else
+  printf("Compiler version: gcc %d.%d.%d\r\n", __GNUC__, __GNUC_MINOR__,
          __GNUC_PATCHLEVEL__);
-  #endif
+#endif
 
   bg_color = RED;
   printf(" ");
@@ -162,12 +162,11 @@ int kshell(multiboot_info_t *mbi, unsigned long magic) {
       sysfetch();
     } else if (check_cmd("reboot")) {
       reboot();
-    } else if (check_cmd("echo")){
-      if(argc <= 0){
+    } else if (check_cmd("echo")) {
+      if (argc <= 0) {
         pass;
-      }
-      else{
-        for(int i = 1; i < argc; i++){
+      } else {
+        for (int i = 1; i < argc; i++) {
           printf(argv[i]);
           printf(" ");
         }

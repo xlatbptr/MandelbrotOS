@@ -8,5 +8,5 @@ int serial_received();
 int is_transmit_empty();
 char read_serial();
 void write_serial(char);
-int serial_writestring(char*);
+int serial_writestring(char *);
 #endif
