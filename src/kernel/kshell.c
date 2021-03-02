@@ -36,6 +36,7 @@ int colorscheme(int argc, const char *argv[]){
           theme_magenta[currentThemes], theme_dmagenta[currentThemes], theme_cyan[currentThemes], theme_dcyan[currentThemes], 
           theme_white[currentThemes], theme_black[currentThemes], theme_gray[currentThemes], theme_dgray[currentThemes], 
           theme_bg[currentThemes], theme_fg[currentThemes]);
+      init_text(5);
       return 0;
     }
   }
