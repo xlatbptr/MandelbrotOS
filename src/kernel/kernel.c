@@ -38,7 +38,7 @@ int kernel_main(unsigned long magic, unsigned long addr) {
   void *mbi = (void *)addr;
 
   // Init functions
-  init_serial(init_serial(), "Serial", false);
+  init_serial();
   do_checks(magic, mbi);
   init_color(0xff0000, 0x990000, 0x00ff00, 0x009900, 0xffff00, 0x999900,
              0x0000ff, 0x000099, 0xff00ff, 0x990099, 0x00ffff, 0x009999,
