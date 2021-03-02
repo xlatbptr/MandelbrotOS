@@ -49,13 +49,12 @@ static char kb_map[128] =
         
 #ifdef QWERTZ
         'y',
-#else
-#ifdef AZERTY
+#elif defined(AZERTY)
         'w',
 #else
         'z',
 #endif
-#endif
+
         'x',  'c',  'v',  'b',  'n', 
 #ifdef AZERTY
         ',', ';', ':', '!',
@@ -89,7 +88,7 @@ static char kb_shift_map[128] =
         0,    0x1b, /* esc */
 #ifdef AZERTY
         '1', '2', '3', '4', '5', '6', '7', '8', 
-        '9', 0, '+', '\b', '\t',
+        '9', '0', 0, '+', '\b', '\t',
 #else 
         '!',  '@',  '#',  '$',  '%', '^', '&',  '*', '(', ')',
         '_',  '+',  '\b', '\t',
@@ -122,12 +121,10 @@ static char kb_shift_map[128] =
 
 #ifdef QWERTZ
         'Z',
-#else
-#ifdef AZERTY
+#elif defined(AZERTY)
         'W',
 #else
         'Y',
-#endif
 #endif
         'X',  'C',  'V',  'B',  'N', 
 #ifdef AZERTY
