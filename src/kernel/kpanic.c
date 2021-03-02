@@ -2,6 +2,7 @@
 #include <kernel/init.h>
 #include <kernel/kbd.h>
 #include <kernel/power.h>
+#include <kernel/serial.h>
 #include <kernel/text.h>
 #include <kernel/vbe.h>
 #include <macros.h>
@@ -24,6 +25,9 @@ void trace(unsigned int MaxFrames) {
 }
 
 void kpanic(char *message, int exno) {
+  serial_writestring("Kernel panic: ");
+  serial_writestring(message);
+  serial_writestring("\r\n");
   register int eax __asm__("eax");
   register int ebx __asm__("ebx");
   register int ecx __asm__("ecx");
