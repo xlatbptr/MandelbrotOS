@@ -155,7 +155,8 @@ int kshell(multiboot_info_t *mbi, unsigned long magic) {
       y = border;
     } else if (check_cmd("cls")) {
       bg_color = BG;
-
+      fg_color = FG;
+      isGreen = 0;
       cls();
     } else if (check_cmd("hi")) {
       for (int p = 0; p != 20; p++) {
