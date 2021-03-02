@@ -1,5 +1,5 @@
 # Welcome
-Welcom to the mandelbrot Operating System. 
+Welcome to the mandelbrot Operating System. 
 This OS is built by a humble group of teenagers over at [Discord](https://discord.gg/W523cD3Q3P). 
 We do this solely to have fun and to learn. 
 We are not organized and are here to enjoy ourselves. 
@@ -34,7 +34,7 @@ Using our OS is really simple, on boot, you'll be greated with a shell.
 - `sysfetch` : neofetch but it's in the kernel
 - `reboot` : reboot the system
 - `bsod` : kernel panic the system
-- `mandlebros` : show mandlebros background
+- `mandlebrot` : show mandlebrot background
 - `ctheme` : change the theme with the following
   - legacy : 
   ![image legacy](./screen/legacy.png)
