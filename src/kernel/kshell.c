@@ -28,7 +28,7 @@ int colorscheme(int argc, const char *argv[]){
     fg_color = FG;
   }
   for(int i = 0; i <= sizeof(*themes); i++){ 
-    if(themes[i] == argv[1]) {
+    if(strcmp(themes[i], argv[1])) {
       currentThemes = i;
       printf("The theme is now %s\r\n", themes[currentThemes]);
       init_color(theme_red[currentThemes], theme_dred[currentThemes], theme_green[currentThemes], theme_dgreen[currentThemes],
@@ -39,7 +39,7 @@ int colorscheme(int argc, const char *argv[]){
       return 0;
     }
   }
-  if(argv[1] == "help") {
+  if(strcmp(argv[1], "help")) {
     printf("syntax = ctheme [theme] \r\nAvaible theme = \r\n-legacy (on boot)\r\n-dark\r\n-light\r\n-witchcraft\r\n-nightsky\r\n");
     return 0;
   }
