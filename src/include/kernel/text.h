@@ -25,8 +25,15 @@ extern int GRAY;
 extern int DARK_GRAY;
 extern int BG;
 extern int FG;
-extern int isGreen;
 
+extern int currentThemes;
+static char *themes[] = {
+  "legacy",               //Default
+  "dark",                 //White text, black background
+  "light",                //Black text, white background
+  "witchcraft",           //Dark and soft purple background, very light gray text
+  "nightsky"              //Proposed by @CaydendW
+}; 
 int init_text(int bor);
 int init_color(int red, int dred, int green, int dgreen, int yellow,
                int dyellow, int blue, int dblue, int magenta, int dmagenta,

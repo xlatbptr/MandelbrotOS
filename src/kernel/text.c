@@ -32,7 +32,8 @@ int GRAY;
 int DARK_GRAY;
 int BG;
 int FG;
-int isGreen = 0;
+
+int currentThemes;
 
 int init_text(int bor) {
   fg_color = FG;
