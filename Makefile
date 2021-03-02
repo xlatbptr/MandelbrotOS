@@ -20,6 +20,11 @@ else
 	CFLAGS=-nostartfiles
 endif
 
+QWERTZ?=0
+ifeq ($(QWERTZ), 1)
+	CFLAGS+=-DQWERTZ
+endif
+
 LIBGCC=$(CROSS)/lib/gcc/$(ARCH)-elf/$(GCC_VERSION)/libgcc.a
 
 AS=nasm
