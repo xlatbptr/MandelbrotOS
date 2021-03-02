@@ -8,6 +8,9 @@ iso/
 # editor settings
 .vscode/
 
+# OS Specific file
+.DS_Store
+
 *.o
 *ao
 *.aso
