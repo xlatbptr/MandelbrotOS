@@ -10,7 +10,67 @@
 #include <string.h>
 
 static uint32_t kb_mode = 0;
+#ifdef QWERTZ
+static char kb_map[128] = {
+    0,    0x1b, /* esc */
+    '1',  '2',  '3',  '4',  '5', '6', '7',  '8', '9', '0',
+    '-',  '=',  '\b', '\t', 'q', 'w', 'e',  'r', 't', 'z',
+    'u',  'i',  'o',  'p',  '[', ']', '\n', 0, /* left ctrl */
+    'a',  's',  'd',  'f',  'g', 'h', 'j',  'k', 'l', ';',
+    '\'', '`',  0, /* left shift */
+    '\\', 'y',  'x',  'c',  'v', 'b', 'n',  'm', ',', '.',
+    '/',  0,                                             /* right shift */
+    '*',  0,                                             /* alt */
+    ' ',                                                 /* space*/
+    0,                                                   /* capslock */
+    0,    0,    0,    0,    0,   0,   0,    0,   0,   0, /* f1 ... f10 */
+    0,                                                   /* num lock*/
+    0,                                                   /* scroll Lock */
+    0,                                                   /* home key */
+    0,                                                   /* up arrow */
+    0,                                                   /* page up */
+    '-',  0,                                             /* left arrow */
+    0,    0,                                             /* right arrow */
+    '+',  0,                                             /* end key*/
+    0,                                                   /* down arrow */
+    0,                                                   /* page down */
+    0,                                                   /* insert key */
+    0,                                                   /* delete key */
+    0,    0,    0,    0,                                 /* f11 key */
+    0,                                                   /* f12 key */
+    0, /* all other keys are undefined */
+};
 
+static char kb_shift_map[128] = {
+    0,    0x1b, /* esc */
+    '!',  '@',  '#',  '$',  '%', '^', '&',  '*', '(', ')',
+    '_',  '+',  '\b', '\t', 'Q', 'W', 'E',  'R', 'T', 'Z',
+    'U',  'I',  'O',  'P',  '{', '}', '\n', 0, /* left control */
+    'A',  'S',  'D',  'F',  'G', 'H', 'J',  'K', 'L', ':',
+    '\"', '~',  0, /* left shift */
+    '|',  'Y',  'X',  'C',  'V', 'B', 'N',  'M', '<', '>',
+    '?',  0,                                             /* right shift */
+    '*',  0,                                             /* alt */
+    ' ',                                                 /* space bar */
+    0,                                                   /* caps lock */
+    0,    0,    0,    0,    0,   0,   0,    0,   0,   0, /* f1 ... f10 */
+    0,                                                   /* num lock*/
+    0,                                                   /* scroll lock */
+    0,                                                   /* home key */
+    0,                                                   /* up arrow */
+    0,                                                   /* page up */
+    '-',  0,                                             /* left arrow */
+    0,    0,                                             /* right arrow */
+    '+',  0,                                             /* end key*/
+    0,                                                   /* down arrow */
+    0,                                                   /* page down */
+    0,                                                   /* insert key */
+    0,                                                   /* delete key */
+    0,    0,    0,    0,                                 /* f11 key */
+    0,                                                   /* f12 key */
+    0, /* all other keys are undefined */
+};
+#else
 static char kb_map[128] = {
     0,    0x1b, /* esc */
     '1',  '2',  '3',  '4',  '5', '6', '7',  '8', '9', '0',
@@ -70,6 +130,7 @@ static char kb_shift_map[128] = {
     0,                                                   /* f12 key */
     0, /* all other keys are undefined */
 };
+#endif
 
 char currkey;
 

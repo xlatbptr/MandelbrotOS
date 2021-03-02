@@ -38,8 +38,14 @@ int kernel_main(unsigned long magic, unsigned long addr) {
   init_check(init_timer(), "Programmable interrupt timer", true);
   init_check(init_heap(0x00f00000), "Memory allocator", true);
   init_check(kbd_init(), "Keyboard", true);
-
   printf("\r\n");
+  char *kbd =
+#ifdef QWERTZ
+      "qwertz";
+#else
+      "qwerty";
+#endif
+  printf("The keyboard layout is: %s\r\n", kbd);
 
   serial_writestring("hello from serial!\r\n");
 
