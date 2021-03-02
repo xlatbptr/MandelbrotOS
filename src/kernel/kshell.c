@@ -83,8 +83,11 @@ void sysfetch() {
   printf(" ");
   bg_color = BG;
   printf(" ");
-
-  bg_color = BG;
+  
+  if(isGreen)
+    bg_color = GREEN;
+  else
+    bg_color = BG;
   printf("\r\n\n");
 }
 
