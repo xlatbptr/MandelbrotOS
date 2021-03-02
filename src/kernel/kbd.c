@@ -157,6 +157,7 @@ char currkey;
 char* kbd;
 
 void set_kbd(){
+  kbd = malloc(sizeof(char) * 10);
   kbd =
   #ifdef QWERTZ
         "qwertz";

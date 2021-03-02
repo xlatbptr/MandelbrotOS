@@ -22,6 +22,7 @@
 
 int kbd_init();
 char *gets();
+void set_kbd();
 
 extern char currkey;
 extern char* kbd;
