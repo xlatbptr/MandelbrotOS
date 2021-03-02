@@ -53,7 +53,7 @@ int kernel_main(unsigned long magic, unsigned long addr) {
   init_check(init_heap(0x00f00000), "Memory allocator", true);
   init_check(kbd_init(), "Keyboard", true);
   set_kbd();
-
+  
   printf("\r\n");
   printf("The keyboard layout is: %s\r\n", kbd);
 
