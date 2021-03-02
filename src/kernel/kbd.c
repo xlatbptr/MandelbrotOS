@@ -154,6 +154,18 @@ static char kb_shift_map[128] =
 };
 
 char currkey;
+char* kbd;
+
+void set_kbd(){
+  kbd =
+  #ifdef QWERTZ
+        "qwertz";
+  #elif defined(AZERTY)
+        "azerty";
+  #else
+        "qwerty";
+  #endif
+}
 
 static char shift(char sc) {
   char ch = sc & 0x7f; // clear highest bit
