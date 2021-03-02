@@ -24,7 +24,7 @@ QWERTZ?=0
 ifeq ($(QWERTZ), 1)
 	CFLAGS+=-DQWERTZ
 endif
-AZERTY?=1
+AZERTY?=0
 ifeq ($(AZERTY), 1)
 	CFLAGS+=-DAZERTY
 endif
