@@ -43,7 +43,11 @@ int kernel_main(unsigned long magic, unsigned long addr) {
 #ifdef QWERTZ
       "qwertz";
 #else
+#ifdef AZERTY
+      "azerty";
+#else
       "qwerty";
+#endif
 #endif
   printf("The keyboard layout is: %s\r\n", kbd);
 
