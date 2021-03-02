@@ -89,7 +89,7 @@ static char kb_shift_map[128] =
         0,    0x1b, /* esc */
 #ifdef AZERTY
         '1', '2', '3', '4', '5', '6', '7', '8', 
-        '9', '°', '+', '\b', '\t',
+        '9', 0, '+', '\b', '\t',
 #else 
         '!',  '@',  '#',  '$',  '%', '^', '&',  '*', '(', ')',
         '_',  '+',  '\b', '\t',
@@ -131,7 +131,7 @@ static char kb_shift_map[128] =
 #endif
         'X',  'C',  'V',  'B',  'N', 
 #ifdef AZERTY
-        '?',  '.', '/', '§', 0, /* right shift */
+        '?',  '.', '/', 0, 0, /* right shift */
 #else
         'M', '<',  '>', '?', 0, /* right shift */
 #endif
