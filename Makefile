@@ -24,6 +24,10 @@ QWERTZ?=0
 ifeq ($(QWERTZ), 1)
 	CFLAGS+=-DQWERTZ
 endif
+AZERTY?=0
+ifeq ($(AZERTY), 1)
+	CFLAGS+=-DAZERTY
+endif
 
 LIBGCC=$(CROSS)/lib/gcc/$(ARCH)-elf/$(GCC_VERSION)/libgcc.a
 

@@ -13,23 +13,56 @@ static uint32_t kb_mode = 0;
 static char kb_map[128] =
     {
         0,    0x1b, /* esc */
-        '1',  '2',  '3',  '4',  '5', '6', '7',  '8', '9', '0',
-        '-',  '=',  '\b', '\t', 'q', 'w', 'e',  'r', 't',
+#ifdef AZERTY
+        '&',  'e',  '"',  '\'',  '(', '-', 'e',  '_', 'c', 'a',
+        ')',  '=',  '\b', '\t', 
+#else 
+        '1', '2', '3', '4', '5', '6', '7', '8', 
+        '9', '-', '=', '\b', '\t',
+#endif
+#ifdef AZERTY
+        'a', 'z',
+#else
+        'q', 'w', 
+#endif
+        'e',  'r', 't',
 #ifdef QWERTZ
         'z',
 #else
         'y',
 #endif
         'u',  'i',  'o',  'p',  '[', ']', '\n', 0, /* left ctrl */
-        'a',  's',  'd',  'f',  'g', 'h', 'j',  'k', 'l', ';',
-        '\'', '`',  0, /* left shift */
+#ifdef AZERTY
+        'q',
+#else        
+        'a',  
+#endif
+        's',  'd',  'f',  'g', 'h', 'j',  'k', 'l', 
+#ifdef AZERTY
+        'm', '#', '$', 0, /* left shift */
+        '<',
+#else
+        ';', '\'', '`',
+        0, /* left shift */
         '\\',
+#endif
+        
 #ifdef QWERTZ
         'y',
 #else
+#ifdef AZERTY
+        'w',
+#else
         'z',
 #endif
-        'x',  'c',  'v',  'b',  'n', 'm', ',',  '.', '/', 0, /* right shift */
+#endif
+        'x',  'c',  'v',  'b',  'n', 
+#ifdef AZERTY
+        ',', ';', ':', '!',
+#else
+        'm', ',',  '.', '/', 
+#endif
+        0, /* right shift */
         '*',  0,                                             /* alt */
         ' ',                                                 /* space*/
         0,                                                   /* capslock */
@@ -54,23 +87,54 @@ static char kb_map[128] =
 static char kb_shift_map[128] =
     {
         0,    0x1b, /* esc */
+#ifdef AZERTY
+        '1', '2', '3', '4', '5', '6', '7', '8', 
+        '9', '°', '+', '\b', '\t',
+#else 
         '!',  '@',  '#',  '$',  '%', '^', '&',  '*', '(', ')',
-        '_',  '+',  '\b', '\t', 'Q', 'W', 'E',  'R', 'T',
+        '_',  '+',  '\b', '\t',
+#endif
+#ifdef AZERTY
+        'A', 'Z',
+#else 
+        'Q', 'W', 
+#endif      
+        'E',  'R', 'T',
 #ifdef QWERTZ
         'Z',
 #else
         'Y',
 #endif
         'U',  'I',  'O',  'P',  '{', '}', '\n', 0, /* left control */
-        'A',  'S',  'D',  'F',  'G', 'H', 'J',  'K', 'L', ':',
-        '\"', '~',  0, /* left shift */
+#ifdef AZERTY
+        'Q',
+#else
+        'A',  
+#endif        
+        'S',  'D',  'F',  'G', 'H', 'J',  'K', 'L', 
+#ifdef AZERTY
+        'M', '#', '*',  0, /* left shift */
+        '>',
+#else
+        ':', '\"', '~',  0, /* left shift */
         '|',
+#endif
+
 #ifdef QWERTZ
         'Z',
 #else
+#ifdef AZERTY
+        'W',
+#else
         'Y',
 #endif
-        'X',  'C',  'V',  'B',  'N', 'M', '<',  '>', '?', 0, /* right shift */
+#endif
+        'X',  'C',  'V',  'B',  'N', 
+#ifdef AZERTY
+        '?',  '.', '/', '§', 0, /* right shift */
+#else
+        'M', '<',  '>', '?', 0, /* right shift */
+#endif
         '*',  0,                                             /* alt */
         ' ',                                                 /* space bar */
         0,                                                   /* caps lock */
