@@ -32,7 +32,15 @@ int GRAY;
 int DARK_GRAY;
 int BG;
 int FG;
-int isGreen = 0;
+
+int currentThemes;
+const char *themes[] = {
+  "legacy",               //Default
+  "dark",                 //White text, black background
+  "light",                //Black text, white background
+  "witchcraft",           //Dark and soft purple background, very light gray text
+  "nightsky"              //Proposed by @CaydendW
+}; 
 
 int init_text(int bor) {
   fg_color = FG;

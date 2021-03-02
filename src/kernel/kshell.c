@@ -6,6 +6,7 @@
 #include <kernel/power.h>
 #include <kernel/text.h>
 #include <kernel/vbe.h>
+#include <kernel/colors.h>
 #include <kernelinf.h>
 #include <macros.h>
 #include <stdbool.h>
@@ -13,6 +14,41 @@
 #include <string.h>
 
 void prompt() { printf("PROMPT> "); }
+
+int colorscheme(int argc, const char *argv[]){
+  if(argc == 1){
+    fg_color = RED;
+    printf("You must specify a theme.\r\ntype ctheme help to see all themes\r\n");
+    fg_color = FG;
+    return 2;
+  } 
+  if(argc >= 3){
+    fg_color = YELLOW;
+    printf("Too much arguments, only the first will be used\r\n");
+    fg_color = FG;
+  }
+  for(int i = 0; i <= sizeof(*themes); i++){ 
+    if(themes[i] == argv[1]) {
+      currentThemes = i;
+      printf("The theme is now %s\r\n", themes[currentThemes]);
+      init_color(theme_red[currentThemes], theme_dred[currentThemes], theme_green[currentThemes], theme_dgreen[currentThemes],
+          theme_yellow[currentThemes], theme_dyellow[currentThemes], theme_blue[currentThemes], theme_dblue[currentThemes],
+          theme_magenta[currentThemes], theme_dmagenta[currentThemes], theme_cyan[currentThemes], theme_dcyan[currentThemes], 
+          theme_white[currentThemes], theme_black[currentThemes], theme_gray[currentThemes], theme_dgray[currentThemes], 
+          theme_bg[currentThemes], theme_fg[currentThemes]);
+      return 0;
+    }
+  }
+  if(argv[1] == "help") {
+    printf("syntax = ctheme [theme] \r\nAvaible theme = \r\n-legacy (on boot)\r\n-dark\r\n-light\r\n-witchcraft\r\n-nightsky\r\n");
+    return 0;
+  }
+  fg_color = RED;
+  printf("error\r\n");
+  fg_color = FG;
+  printf("the selected theme doesn't exist");
+  return 1;
+}
 
 void sysfetch() {
   printf("%s\r\n", KERNEL_ARTS);
@@ -83,11 +119,8 @@ void sysfetch() {
   printf(" ");
   bg_color = BG;
   printf(" ");
-  
-  if(isGreen)
-    bg_color = GREEN;
-  else
-    bg_color = BG;
+
+  bg_color = BG;
   printf("\r\n\n");
 }
 
@@ -149,17 +182,7 @@ int kshell(void *mbi, unsigned long magic) {
       } else {
         printf("Aborted BSOD!\r\n");
       }
-    } else if (check_cmd("clsg")) {
-      drawrect(0, 0, fb_width, fb_height, GREEN);
-      isGreen = 1;
-      bg_color = GREEN;
-      fg_color = BLACK;
-      x = border;
-      y = border;
     } else if (check_cmd("cls")) {
-      bg_color = BG;
-      fg_color = FG;
-      isGreen = 0;
       cls();
     } else if (check_cmd("hi")) {
       for (int p = 0; p != 20; p++) {
@@ -181,15 +204,14 @@ int kshell(void *mbi, unsigned long magic) {
         }
         printf("\r\n");
       }
+    } else if (check_cmd("ctheme")){
+      colorscheme(argc, argv);
     } else if (check_cmd(0)) {
       pass;
     } else {
       fg_color = RED;
       printf("%s", argv[0]);
-      if(isGreen)
-        fg_color = BLACK;
-      else
-        fg_color = FG;
+      fg_color = FG;
       printf(": Not a valid command!\r\n");
     }
   }
