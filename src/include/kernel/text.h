@@ -25,6 +25,7 @@ extern int GRAY;
 extern int DARK_GRAY;
 extern int BG;
 extern int FG;
+extern int isGreen;
 
 int init_text(int bor);
 int init_color(int red, int dred, int green, int dgreen, int yellow,

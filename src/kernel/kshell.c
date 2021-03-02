@@ -148,9 +148,14 @@ int kshell(multiboot_info_t *mbi, unsigned long magic) {
       }
     } else if (check_cmd("clsg")) {
       drawrect(0, 0, fb_width, fb_height, GREEN);
+      isGreen = 1;
+      bg_color = GREEN;
+      fg_color = BLACK;
       x = border;
       y = border;
     } else if (check_cmd("cls")) {
+      bg_color = BG;
+
       cls();
     } else if (check_cmd("hi")) {
       for (int p = 0; p != 20; p++) {
@@ -177,7 +182,10 @@ int kshell(multiboot_info_t *mbi, unsigned long magic) {
     } else {
       fg_color = RED;
       printf("%s", argv[0]);
-      fg_color = FG;
+      if(isGreen)
+        fg_color = BLACK;
+      else
+        fg_color = FG;
       printf(": Not a valid command!\r\n");
     }
   }
