@@ -2,9 +2,6 @@
 iso/
 cross/
 
-# build results
-iso/
-
 # editor settings
 .vscode/
 

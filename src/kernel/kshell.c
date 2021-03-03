@@ -68,10 +68,10 @@ void sysfetch() {
   milli = milli - 1000 * sec;
 
   printf("\r\nKernel name: %s\r\nKernel version: %s\r\nKernel build date: %s "
-         "%s\r\nUptime: %u hours %u minutes %u seconds\r\nCPU model number: "
+         "%s\r\nUptime: %u hours %u minutes %u seconds\r\nCPU brand: %s\r\nCPU model number: "
          "%u\r\n",
          KERNEL_NAME, KERNEL_VERS, KENREL_DATE, KERNEL_TIME, hr, min, sec,
-         get_model());
+         get_vendor(), get_model());
 
 #ifdef __clang__
   printf("Compiler version: clang %d.%d.%d\r\n", __clang_major__,
@@ -165,10 +165,10 @@ int kshell(void *mbi, unsigned long magic) {
         mandelbrot(atof(argv[1]), atof(argv[2]), atof(argv[3]), atof(argv[4]),
                    0x000000);
         //    }
-      } else if (argc > 1 && argc < 5 || argc > 5) {
-        printf("%s: Invalid amount of args!\r\n", argv[0]);
       } else if (argc == 1) {
         mandelbrot(-1.95, -1.2, 2.5, 2.5, 0x000000);
+      } else {
+        printf("%s: Invalid amount of args!\r\n", argv[0]);
       }
     } else if (check_cmd("bsod")) {
       printf("Warning this function will BSOD (Blue Screen of Death) your "
@@ -196,19 +196,14 @@ int kshell(void *mbi, unsigned long magic) {
     } else if (check_cmd("reboot")) {
       reboot();
     } else if (check_cmd("echo")) {
-      if (argc <= 0) {
-        pass;
-      } else {
-        for (int i = 1; i < argc; i++) {
-          printf(argv[i]);
-          printf(" ");
-        }
-        printf("\r\n");
+      for (int i = 1; i < argc; i++) {
+        printf(argv[i]);
+        printf(" ");
       }
+      printf("\r\n");
     } else if (check_cmd("ctheme")){
       colorscheme(argc, argv);
     } else if (check_cmd(0)) {
-      pass;
     } else {
       fg_color = RED;
       printf("%s", argv[0]);

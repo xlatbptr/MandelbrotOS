@@ -148,7 +148,7 @@ int *create_delim_dict(char *delim) {
 
   int i;
   for (i = 0; i < strlen(delim); i++) {
-    d[delim[i]] = 1;
+    d[(int) delim[i]] = 1;
   }
   return d;
 }
@@ -171,7 +171,7 @@ char *strtok(char *str, char *delim) {
     strcpy(last, str);
   }
 
-  while (deli_dict[*last] && *last != '\0') {
+  while (deli_dict[(int) *last] && *last != '\0') {
     last++;
   }
   str = last;
@@ -180,7 +180,7 @@ char *strtok(char *str, char *delim) {
     free(to_free);
     return NULL;
   }
-  while (*last != '\0' && !deli_dict[*last]) {
+  while (*last != '\0' && !deli_dict[(int) *last]) {
     last++;
   }
 

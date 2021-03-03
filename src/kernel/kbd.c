@@ -202,7 +202,6 @@ char mapndebounce(uint8_t scancode) {
   /* is a escape char? */
   if (KB_IS_ESCAPE(sc)) {
     kb_mode |= E0ESC;
-    pass;
   }
 
   if ((m = shift(sc))) {
@@ -242,7 +241,6 @@ void handelescape(uint8_t scancode) {
 
   if (KB_IS_ESCAPE(sc)) {
     kb_mode |= E0ESC;
-    pass;
   }
 
   if ((m = shift(sc))) {
@@ -279,8 +277,6 @@ void kbdhandler(register_t *r) {
 
 char *gets() {
   char *mallocd, *base;
-  uint8_t m;
-  size_t size = 0, index = 0;
   int chars_typed = 0;
 
   mallocd = (char *)malloc(sizeof(char));

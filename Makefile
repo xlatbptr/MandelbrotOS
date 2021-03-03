@@ -32,7 +32,7 @@ endif
 LIBGCC=$(CROSS)/lib/gcc/$(ARCH)-elf/$(GCC_VERSION)/libgcc.a
 
 AS=nasm
-CWARNINGS= -Wno-unused-variable -Wno-attributes -Wno-unused-parameter -Wno-pointer-to-int-cast -Wno-int-conversion
+CWARNINGS=-Wall
 
 GCC_VERSION=10.2.0
 

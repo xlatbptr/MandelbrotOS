@@ -6,7 +6,7 @@
 
 typedef struct rgb {
   uint8_t r, g, b;
-} argb_t __attribute__((packed));
+} argb_t;
 
 extern void *fb_addr;
 

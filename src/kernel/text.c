@@ -1,7 +1,6 @@
 #include <font.h>
 #include <kernel/text.h>
 #include <kernel/vbe.h>
-#include <macros.h>
 #include <stdarg.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -75,17 +74,15 @@ int init_color(int red, int dred, int green, int dgreen, int yellow,
   return 0;
 }
 
-void put(char c, int x, int y, int fgcol, int bgcol) {
-  int lx;
-  int ly;
+void put(char c, int putx, int puty, int fgcol, int bgcol) {
   uint8_t *bitmap = (uint8_t *)font8x8_basic[c % 128];
-  for (lx = 0; lx < GLYPH_WIDTH; lx++) {
-    for (ly = 0; ly < GLYPH_HEIGHT; ly++) {
+  for (int lx = 0; lx < GLYPH_WIDTH; lx++) {
+    for (int ly = 0; ly < GLYPH_HEIGHT; ly++) {
       uint8_t row = bitmap[ly];
       if ((row >> lx) & 1)
-        putpixel(x + lx, y + ly, fgcol);
+        putpixel(putx + lx, puty + ly, fgcol);
       else
-        putpixel(x + lx, y + ly, bgcol);
+        putpixel(putx + lx, puty + ly, bgcol);
     }
   }
 }
@@ -109,7 +106,7 @@ void scroll_screen_up() {
     vidmem[tmp] = vidmem[tmp + ((fb_width * (GLYPH_WIDTH + 1)) / 2)];
   }
   drawrect(0, 0, fb_width, border, bg_color);
-  drawrect(0, fb_height - (border + (GLYPH_HEIGHT + 1) + (border - 1)),
+  drawrect(0, (int) fb_height - (border + (GLYPH_HEIGHT + 1) + (border - 1)),
            fb_width, fb_height, bg_color);
 }
 
@@ -121,10 +118,8 @@ void backspace() {
   } else {
     if (y >= 9) {
       y = y - (GLYPH_WIDTH + 1);
-      x = fb_width - border - (GLYPH_WIDTH);
+      x = (int) fb_width - border - (GLYPH_WIDTH);
       put(' ', x, y, bg_color, bg_color);
-    } else {
-      pass
     }
   }
 }
@@ -149,7 +144,7 @@ void puts(const char *string) {
       string++;
     } else if (*string == '\t') {
       for (int t = 0; t != 3; t++) {
-        put(" ", x, y, bg_color, bg_color);
+        put(' ', x, y, bg_color, bg_color);
         x += GLYPH_WIDTH + 1;
       }
       string++;
@@ -257,7 +252,7 @@ void displayCharacter(char string, int *a) {
     y += GLYPH_HEIGHT + 1;
   } else if (string == '\t') {
     for (int t = 0; t != 3; t++) {
-      put(" ", x, y, bg_color, bg_color);
+      put(' ', x, y, bg_color, bg_color);
       x += GLYPH_WIDTH + 1;
     }
   } else if (string == '\b') {
@@ -294,7 +289,7 @@ void displayString(char *string, int *a) {
       string++;
     } else if (*string == '\t') {
       for (int t = 0; t != 3; t++) {
-        put(" ", x, y, bg_color, bg_color);
+        put(' ', x, y, bg_color, bg_color);
         x += GLYPH_WIDTH + 1;
       }
       string++;
@@ -663,11 +658,6 @@ int vprintf(const char *format, va_list list) {
 
         break;
       }
-
-      case 'a':
-      case 'A':
-        // ACK! Hexadecimal floating points...
-        break;
 
       default:
         break;
