@@ -23,7 +23,6 @@ bool baddraw(int x, int y) {
 }
 
 int init_vbe(void *mbi) {
-  unsigned int multiboot_size = *(unsigned int *) mbi;
   struct multiboot_tag *tag;
 
   // look for the framebuffer tag
