@@ -19,6 +19,7 @@ It's like tracing OS history, but with modern knowledge and without a lot of bud
 - We need a filesystem. We are planning to use USTAR.
 
 # Build Requirements (Arch/Manjaro package names)
+- `build-essential`
 - `qemu`
 - `nasm`
 - `xorriso`
