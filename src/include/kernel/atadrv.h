@@ -11,6 +11,11 @@
 #define ATADEV_SATA 3
 #define ATADEV_UNKNOWN 10
 
+struct DEVICE{          
+    int base;
+    int dev_ctl;
+};
+
 int init_atadrv();
 
 #endif

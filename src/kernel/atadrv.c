@@ -21,12 +21,6 @@
 #include <stdint.h>
 #include <string.h>
 
-struct DEVICE{          
-    int base;
-    int dev_ctl;
-};
-
-
 //Copied from osdev.org
 int detect_devtype(int slavebit, struct DEVICE *ctrl){      
     ata_soft_reset(ctrl->dev_ctl);                          
