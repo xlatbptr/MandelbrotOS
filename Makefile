@@ -36,7 +36,6 @@ CWARNINGS= -Wno-unused-variable -Wno-attributes -Wno-unused-parameter -Wno-point
 
 GCC_VERSION=10.2.0
 
-
 CFLAGS+=-m32 -std=c99 -nostdlib -nodefaultlibs -ffreestanding -fno-builtin -fno-omit-frame-pointer $(CWARNINGS) $(CINCLUDES) -Isrc/include/
 DFLAGS=-g -DDEBUG -O0
 
@@ -72,7 +71,7 @@ GENISOIMAGE=genisoimage
 ISO=build/mandelbrotos.iso
 QEMU=qemu-system-x86_64 -cdrom $(ISO) -serial stdio
 
-.PHONY: all build clean qemu
+.PHONY: all build clean
 
 all: $(ISO)
 

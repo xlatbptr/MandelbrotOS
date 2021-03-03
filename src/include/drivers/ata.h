@@ -83,4 +83,10 @@
 void init_ide(unsigned int BAR0, unsigned int BAR1, unsigned int BAR2,
               unsigned int BAR3, unsigned int BAR4);
 
+int ide_read_sectors(unsigned char drive, unsigned char numsects, unsigned int lba,
+                      unsigned short es, unsigned int edi);
+
+int ide_write_sectors(unsigned char drive, unsigned char numsects, unsigned int lba,
+                       unsigned short es, unsigned int edi);                    
+
 #endif
