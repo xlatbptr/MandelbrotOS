@@ -46,8 +46,9 @@ LDFLAGS=-melf_i386 -nostdlib -T src/arch/$(ARCH)/linker.ld -Map=build/mandelbrot
 
 CSOURCES:=\
 $(wildcard src/kernel/*.c)\
-src/string/string.c\
-$(wildcard src/arch/$(ARCH)/*.c)
+$(wildcard src/drivers/*.c)\
+$(wildcard src/arch/$(ARCH)/*.c)\
+src/string/string.c
 
 ASOURCES:=\
 src/arch/$(ARCH)/boot.S\

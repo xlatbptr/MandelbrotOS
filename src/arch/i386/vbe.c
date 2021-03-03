@@ -1,7 +1,7 @@
 #include <font.h>
 #include <kernel/text.h>
 #include <kernel/vbe.h>
-#include <kernel/serial.h>
+#include <drivers/serial.h>
 #include <multiboot.h>
 #include <stdbool.h>
 

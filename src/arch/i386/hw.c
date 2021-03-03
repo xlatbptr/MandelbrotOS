@@ -18,6 +18,13 @@ uint16_t inw(uint16_t _port) {
   return rv;
 }
 
+void insl(unsigned reg, unsigned int *buffer, int quads) {
+  int index;
+  for (index = 0; index < quads; index++) {
+    buffer[index] = inb(reg);
+  }
+}
+
 void io_wait(void) {
   __asm__ volatile("jmp 1f\n\t"
                    "1:jmp 2f\n\t"

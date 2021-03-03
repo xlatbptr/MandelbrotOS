@@ -7,5 +7,6 @@ unsigned char inb(unsigned short _port);
 void outb(unsigned short _port, unsigned char _data);
 uint16_t inw(uint16_t _port);
 void io_wait(void);
+void insl(unsigned reg, unsigned int *buffer, int quads);
 
 #endif // !__HW_H__

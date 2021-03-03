@@ -1,6 +1,7 @@
+#include <drivers/ata.h>
+#include <drivers/serial.h>
 #include <font.h>
 #include <kernel/alloc.h>
-#include <kernel/atadrv.h>
 #include <kernel/gdt.h>
 #include <kernel/idt.h>
 #include <kernel/init.h>
@@ -10,7 +11,6 @@
 #include <kernel/kshell.h>
 #include <kernel/pit.h>
 #include <kernel/power.h>
-#include <kernel/serial.h>
 #include <kernel/text.h>
 #include <kernel/vbe.h>
 #include <macros.h>
@@ -53,9 +53,9 @@ int kernel_main(unsigned long magic, unsigned long addr) {
   init_check(init_timer(), "Programmable interrupt timer", true);
   init_check(init_heap(0x00f00000), "Memory allocator", true);
   init_check(kbd_init(), "Keyboard", true);
-  init_check(init_atadrv(), "ATA Driver", true);
   set_kbd();
-  
+  init_ide(0x1F0, 0x3F6, 0x170, 0x376, 0x000); // OhOOHHhhOO Temporary magic numbers that no-one understands
+
   printf("\r\n");
   printf("The keyboard layout is: %s\r\n", kbd);
 
