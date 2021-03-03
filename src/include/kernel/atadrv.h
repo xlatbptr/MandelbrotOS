@@ -9,8 +9,8 @@
 #define ATADEV_SATAPI 1
 #define ATADEV_PATA 2
 #define ATADEV_SATA 3
-
 #define ATADEV_UNKNOWN 10
 
+int init_atadrv();
 
 #endif

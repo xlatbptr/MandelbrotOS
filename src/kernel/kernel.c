@@ -1,5 +1,6 @@
 #include <font.h>
 #include <kernel/alloc.h>
+#include <atadrv.h>
 #include <kernel/gdt.h>
 #include <kernel/idt.h>
 #include <kernel/init.h>
@@ -52,6 +53,7 @@ int kernel_main(unsigned long magic, unsigned long addr) {
   init_check(init_timer(), "Programmable interrupt timer", true);
   init_check(init_heap(0x00f00000), "Memory allocator", true);
   init_check(kbd_init(), "Keyboard", true);
+  init_check(init_atadrv(), "ATA Driver", true);
   set_kbd();
   
   printf("\r\n");
