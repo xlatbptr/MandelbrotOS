@@ -1,6 +1,6 @@
 #include <font.h>
 #include <kernel/alloc.h>
-#include <atadrv.h>
+#include <kernel/atadrv.h>
 #include <kernel/gdt.h>
 #include <kernel/idt.h>
 #include <kernel/init.h>
