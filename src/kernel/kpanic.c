@@ -60,7 +60,7 @@ void kpanic(char *message, int exno) {
 
   cls();
 
-  for (int j = 0; j != (fb_width / GLYPH_WIDTH + 1) / 2 - 12; j++) {
+  for (unsigned long j = 0; j != (fb_width / GLYPH_WIDTH + 1) / 2 - 12; j++) {
     printf(" ");
   }
 

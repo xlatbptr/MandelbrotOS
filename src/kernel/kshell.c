@@ -27,8 +27,8 @@ int colorscheme(int argc, const char *argv[]){
     printf("Too much arguments, only the first will be used\r\n");
     fg_color = FG;
   }
-  for(int i = 0; i <= sizeof(*themes); i++){ 
-    if(strcmp(themes[i], (char*)argv[1])) {
+  for(unsigned long i = 0; i <= sizeof(*themes); i++){
+    if(strcmp(themes[i], (char*)argv[1]) != 0) {
       currentThemes = i;
       printf("The theme is now %s\r\n", themes[currentThemes]);
       init_color(theme_red[currentThemes], theme_dred[currentThemes], theme_green[currentThemes], theme_dgreen[currentThemes],
@@ -40,7 +40,7 @@ int colorscheme(int argc, const char *argv[]){
       return 0;
     }
   }
-  if(strcmp((char*)argv[1], "help")) {
+  if(strcmp((char*)argv[1], "help") != 0) {
     printf("syntax = ctheme [theme] \r\nAvaible theme = \r\n-legacy (on boot)\r\n-dark\r\n-light\r\n-witchcraft\r\n-nightsky\r\n");
     return 0;
   }
@@ -134,7 +134,7 @@ int kshell(void *mbi, unsigned long magic) {
     const char *argv[wspaceamount(args) + 1];
     int argc = 0;
 
-    for (int i = 0; i < strlen(args) + 1; i++) {
+    for (unsigned int i = 0; i < strlen(args) + 1; i++) {
       line[i] = args[i];
     }
 

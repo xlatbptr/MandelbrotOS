@@ -32,7 +32,7 @@ endif
 LIBGCC=$(CROSS)/lib/gcc/$(ARCH)-elf/$(GCC_VERSION)/libgcc.a
 
 AS=nasm
-CWARNINGS=-Wall
+CWARNINGS=-Wall -Wextra
 
 GCC_VERSION=10.2.0
 
