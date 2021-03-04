@@ -21,7 +21,7 @@ inline void outw(unsigned short _port, uint16_t _data) {
 }
 
 inline uint32_t inl(uint16_t _port) {
-  uint16_t rv;
+  uint32_t rv;
   __asm__ __volatile__("inl %1, %0" : "=a"(rv) : "dN"(_port));
   return rv;
 }
