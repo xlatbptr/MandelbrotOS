@@ -26,7 +26,6 @@ extern int DARK_GRAY;
 extern int BG;
 extern int FG;
 
-extern int currentThemes;
 static char *themes[] = {
   "legacy",               //Default
   "dark",                 //White text, black background

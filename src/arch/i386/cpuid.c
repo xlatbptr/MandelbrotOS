@@ -21,6 +21,5 @@ char* get_vendor() {
   uint32_t* string = malloc(5 * sizeof(uint32_t));
   cpuid_string(0, string);
 
-  printf("%s\r\n", string + 1);
   return (char *)(string + 1);
 }

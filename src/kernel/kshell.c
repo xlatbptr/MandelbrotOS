@@ -8,50 +8,42 @@
 #include <kernel/vbe.h>
 #include <kernel/colors.h>
 #include <kernelinf.h>
-#include <macros.h>
 #include <stdbool.h>
-#include <stddef.h>
 #include <string.h>
 
-void prompt() { printf("PROMPT> "); }
-
-int colorscheme(int argc, const char *argv[]){
-  if(argc == 1){
-    fg_color = RED;
-    printf("You must specify a theme.\r\ntype ctheme help to see all themes\r\n");
-    fg_color = FG;
-    return 2;
-  } 
-  if(argc >= 3){
-    fg_color = YELLOW;
-    printf("Too much arguments, only the first will be used\r\n");
-    fg_color = FG;
-  }
-  for(unsigned long i = 0; i <= sizeof(*themes); i++){
-    if(strcmp(themes[i], (char*)argv[1]) != 0) {
-      currentThemes = i;
-      printf("The theme is now %s\r\n", themes[currentThemes]);
-      init_color(theme_red[currentThemes], theme_dred[currentThemes], theme_green[currentThemes], theme_dgreen[currentThemes],
-          theme_yellow[currentThemes], theme_dyellow[currentThemes], theme_blue[currentThemes], theme_dblue[currentThemes],
-          theme_magenta[currentThemes], theme_dmagenta[currentThemes], theme_cyan[currentThemes], theme_dcyan[currentThemes], 
-          theme_white[currentThemes], theme_black[currentThemes], theme_gray[currentThemes], theme_dgray[currentThemes], 
-          theme_bg[currentThemes], theme_fg[currentThemes]);
-      init_text(5);
-      return 0;
-    }
-  }
-  if(strcmp((char*)argv[1], "help") != 0) {
-    printf("syntax = ctheme [theme] \r\nAvaible theme = \r\n-legacy (on boot)\r\n-dark\r\n-light\r\n-witchcraft\r\n-nightsky\r\n");
-    return 0;
-  }
-  fg_color = RED;
-  printf("error\r\n");
-  fg_color = FG;
-  printf("the selected theme doesn't exist");
-  return 1;
+void cmd_help(int argc, const char *argv[]);
+void cmd_hello() {
+  printf("Hello, world!\r\n");
 }
+void cmd_mandelbrot(int argc, const char *argv[]) {
+  if (argc == 5) {
+    mandelbrot(atof(argv[1]), atof(argv[2]),
+               atof(argv[3]), atof(argv[4]),
+               0x000000);
+  } else if (argc = 1) {
+    mandelbrot(-1.95, -1.2, 2.5, 2.5, 0x000000);
+  } else {
+    printf("usage: %s [<left> <top> <xside> <yside>]\r\n", argv[0]);
+  }
+}
+void cmd_bsod() {
+  printf("WARNING: this command will cause a BSoD, it's "
+         "used just for testing.\r\nContinue: [y/N] ");
+  char *confirm = gets();
+  for (int i = 0; confirm[i]; i++) {
+    confirm[i] = tolower(confirm[i]);
+  }
 
-void sysfetch() {
+  if (strcmp(confirm, "yes") != 0 || strcmp(confirm, "y") != 0) {
+    kpanic("User induced BSOD", 20);
+  } else {
+    printf("Aborted!\r\n");
+  }
+}
+void cmd_cls() {
+  cls();
+}
+void cmd_sysfetch() {
   printf("%s\r\n", KERNEL_ARTS);
 
   // Value chosen to be 1 hour, 1 minute, 1 second, and 1 millisecond
@@ -81,6 +73,7 @@ void sysfetch() {
          __GNUC_PATCHLEVEL__);
 #endif
 
+  //#region color test
   bg_color = RED;
   printf(" ");
   bg_color = GREEN;
@@ -123,11 +116,87 @@ void sysfetch() {
 
   bg_color = BG;
   printf("\r\n\n");
+  //#endregion color test
+}
+void cmd_reboot() {
+  reboot();
+}
+void cmd_echo(int argc, const char *argv[]) {
+  for (int i = 1; i < argc; i++) {
+    printf(argv[i]);
+    printf(" ");
+  }
+  printf("\r\n");
+}
+void cmd_ctheme(int argc, const char *argv[]) {
+  if (strcmp((char*)argv[1], "help") != 0 || argc != 2) {
+    printf("Usage: ctheme <theme>\r\n"
+           "Available themes:\r\n");
+    for (int i = 0; i < sizeof(themes) / sizeof(char *); ++i) {
+      printf("- %s\r\n", themes[i]);
+    }
+    return;
+  }
+  for (unsigned long i = 0; i <= sizeof(*themes); i++) {
+    if (strcmp(themes[i], (char*)argv[1]) != 0) {
+      printf("The theme is now %s\r\n", themes[i]);
+      // TODO: make a struct array for all themes, this is ugly
+      init_color(theme_red[i], theme_dred[i], theme_green[i], theme_dgreen[i],
+          theme_yellow[i], theme_dyellow[i], theme_blue[i], theme_dblue[i],
+          theme_magenta[i], theme_dmagenta[i], theme_cyan[i], theme_dcyan[i],
+          theme_white[i], theme_black[i], theme_gray[i], theme_dgray[i],
+          theme_bg[i], theme_fg[i]);
+      init_text(5);
+      return ;
+    }
+  }
+  fg_color = RED;
+  printf("error: ");
+  fg_color = FG;
+  printf("the selected theme doesn't exist\r\n");
+}
+
+static shell_command_t commands[] = {
+    { "help", "print the available commands", cmd_help },
+    { "hello", "print \"Hello, world!\"", cmd_hello },
+    { "mandelbrot", "draw a mandelbrot", cmd_mandelbrot },
+    { "bsod", "show a blue screen of death", cmd_bsod },
+    { "cls", "clear the screen", cmd_cls },
+    { "clear", "alias for cls (clear the screen)", cmd_cls },
+    { "sysfetch", "get information about the system", cmd_sysfetch },
+    { "reboot", "reboot the system", cmd_reboot },
+    { "echo", "print the string passed as the argument", cmd_echo },
+    { "ctheme", "change the current theme", cmd_ctheme }
+};
+static int commands_amount = sizeof(commands) / sizeof(shell_command_t);
+
+void cmd_help(int argc, const char *argv[]) {
+  int page = 0;
+  if (argc > 1) {
+    page = atoi((char *) argv[1]) - 1;
+  }
+
+#define CMD_HELP_PAGE_SIZE 10
+
+  int total_pages = commands_amount / CMD_HELP_PAGE_SIZE +
+      (commands_amount % CMD_HELP_PAGE_SIZE != 0);
+  if (page >= total_pages) {
+    printf("%s: invalid page number\r\n", argv[0]);
+    return;
+  }
+
+  printf("# help page %d\r\n", page + 1);
+  for (int i = 10 * page; i < 10 * page + 10; ++i) {
+    if (i >= commands_amount) break;
+    printf("%s - %s\r\n", commands[i].name, commands[i].description);
+  }
+  if (page + 1 >= total_pages)
+    printf("# to open the next page, do \"help %d\"\r\n", page + 2);
 }
 
 int kshell(void *mbi, unsigned long magic) {
-  while (true) {
-    prompt();
+  while (1) {
+    printf("PROMPT> ");
 
     char *args = gets();
     char line[strlen(args) + 1];
@@ -143,74 +212,19 @@ int kshell(void *mbi, unsigned long magic) {
       argc++;
       argv[argc] = strtok(0, " ");
     }
-
-    if (check_cmd("hello")) {
-      printf("Hello, world!\r\n");
-    } else if (check_cmd("mandelbrot")) {
-      if (argc == 5) {
-        // int inval = false;
-        // for (int i = 1; i != 4; i++)
-        // {
-        //    if (isdigit(argv[i]) == 0)
-        //    {
-        //       inval = true;
-        //    }
-        // }
-        // if (inval)
-        // {
-        //    printf("Invalid input! Requires float!\r\n");
-        // }
-        // else
-        // {
-        mandelbrot(atof(argv[1]), atof(argv[2]), atof(argv[3]), atof(argv[4]),
-                   0x000000);
-        //    }
-      } else if (argc == 1) {
-        mandelbrot(-1.95, -1.2, 2.5, 2.5, 0x000000);
-      } else {
-        printf("%s: Invalid amount of args!\r\n", argv[0]);
-      }
-    } else if (check_cmd("bsod")) {
-      printf("Warning this function will BSOD (Blue Screen of Death) your "
-             "system. This is usually bad.\r\nContinue y/[N]: ");
-      char *confirm = gets();
-      for (int i = 0; confirm[i]; i++) {
-        confirm[i] = tolower(confirm[i]);
-      }
-
-      if (strcmp(confirm, "yes") || strcmp(confirm, "y")) {
-        kpanic("User induced BSOD", 20);
-      } else {
-        printf("Aborted BSOD!\r\n");
-      }
-    } else if (check_cmd("cls")) {
-      cls();
-    } else if (check_cmd("hi")) {
-      for (int p = 0; p != 20; p++) {
-        printf("hi\r\n");
-      }
-    } else if (check_cmd("cpuid")) {
-      get_vendor();
-    } else if (check_cmd("sysfetch")) {
-      sysfetch();
-    } else if (check_cmd("reboot")) {
-      reboot();
-    } else if (check_cmd("echo")) {
-      for (int i = 1; i < argc; i++) {
-        printf(argv[i]);
-        printf(" ");
-      }
-      printf("\r\n");
-    } else if (check_cmd("ctheme")){
-      colorscheme(argc, argv);
-    } else if (check_cmd(0)) {
-    } else {
-      fg_color = RED;
-      printf("%s", argv[0]);
-      fg_color = FG;
-      printf(": Not a valid command!\r\n");
+    if (argc == 0) {
+      continue;
     }
-  }
 
-  return 0;
+    bool command_found = false;
+    for (int n = 0; n < commands_amount; ++n) {
+      if (strcmp((char *) argv[0], commands[n].name) != 0) {
+        commands[n].func(argc, argv);
+        command_found = true;
+        break;
+      }
+    }
+    if (! command_found)
+      printf("command not found: %s\r\n", argv[0]);
+  }
 }

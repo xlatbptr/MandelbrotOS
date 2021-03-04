@@ -132,14 +132,13 @@ char *dyncat(char *s1, char *s2) {
 }
 
 int strcmp(char input[], char check[]) {
-  int i, result = 1;
+  int i;
   for (i = 0; input[i] != '\0' || check[i] != '\0'; i++) {
     if (input[i] != check[i]) {
-      result = 0;
-      break;
+      return 0;
     }
   }
-  return result;
+  return 1;
 }
 
 int *create_delim_dict(char *delim) {
@@ -231,9 +230,9 @@ float atof(const char *s) {
   return rez * fact;
 }
 
-int tolower(int ch) {
+char tolower(char ch) {
   if (ch >= 'A' && ch <= 'Z')
-    return ('a' + ch - 'A');
+    return 'a' + ch - 'A';
   else
     return ch;
 }

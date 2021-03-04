@@ -32,8 +32,6 @@ int DARK_GRAY;
 int BG;
 int FG;
 
-int currentThemes;
-
 int init_text(int bor) {
   fg_color = FG;
   bg_color = BG;

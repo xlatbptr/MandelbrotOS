@@ -17,7 +17,7 @@ int atoi(char *str);
 char *dyncat(char *s1, char *s2);
 int strcmp(char input[], char check[]);
 char *strtok(char *str, char *delim);
-int tolower(int ch);
+char tolower(char ch);
 float atof(const char *s);
 int isdigit(int c);
 int wspaceamount(char *a);
