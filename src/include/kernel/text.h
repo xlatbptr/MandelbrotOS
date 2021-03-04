@@ -40,7 +40,7 @@ int init_color(int red, int dred, int green, int dgreen, int yellow,
                int cyan, int dcyan, int white, int black, int gray, int dgray,
                int bg, int fg);
 
-void put(char c, int x, int y, int fgcol, int bgcol);
+void put(char c, int putx, int puty, int fgcol, int bgcol);
 void puts(const char *string);
 
 int printf(const char *format, ...);

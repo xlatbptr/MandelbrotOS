@@ -25,9 +25,7 @@ void trace(unsigned int MaxFrames) {
 }
 
 void kpanic(char *message, int exno) {
-  serial_writestring("Kernel panic: ");
-  serial_writestring(message);
-  serial_writestring("\r\n");
+#ifndef __clang__
   register int eax __asm__("eax");
   register int ebx __asm__("ebx");
   register int ecx __asm__("ecx");
@@ -39,6 +37,23 @@ void kpanic(char *message, int exno) {
   register int bx __asm__("bx");
   register int cx __asm__("cx");
   register int dx __asm__("dx");
+
+  int eax_state = eax;
+  int ebx_state = ebx;
+  int ecx_state = ecx;
+  int edx_state = edx;
+  int esi_state = esi;
+  int edi_state = edi;
+  int esp_state = esp;
+  int ax_state = ax;
+  int bx_state = bx;
+  int cx_state = cx;
+  int dx_state = dx;
+#endif
+
+  serial_writestring("Kernel panic: ");
+  serial_writestring(message);
+  serial_writestring("\r\n");
 
   fg_color = RED;
   bg_color = BLUE;
@@ -70,10 +85,13 @@ void kpanic(char *message, int exno) {
 
   printf("\b\b\r\n\r\n");
 
+#ifndef __clang__ // gcc only, doesn't work on clang properly
   printf("ASM registers:\r\n");
   printf("eax=0x%X ebx=0x%X ecx=0x%X edx=0x%X esi=0x%X edi=0x%X esp=0x%X "
          "ax=0x%X bx=0x%X cx=0x%X dx=%X\r\n\r\n",
-         eax, ebx, ecx, edx, esi, edi, esp, ax, bx, cx, dx);
+         eax_state, ebx_state, ecx_state, edx_state, esi_state, edi_state,
+         esp_state, ax_state, bx_state, cx_state, dx_state);
+#endif
 
   trace(20);
 

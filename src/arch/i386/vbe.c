@@ -23,7 +23,6 @@ bool baddraw(int x, int y) {
 }
 
 int init_vbe(void *mbi) {
-  unsigned int multiboot_size = *(unsigned int *) mbi;
   struct multiboot_tag *tag;
 
   // look for the framebuffer tag
@@ -34,7 +33,7 @@ int init_vbe(void *mbi) {
     if (tag->type == MULTIBOOT_TAG_TYPE_FRAMEBUFFER) {
       struct multiboot_tag_framebuffer *fb =
           (struct multiboot_tag_framebuffer *) tag;
-      fb_addr = fb->common.framebuffer_addr;
+      fb_addr = (void *) fb->common.framebuffer_addr;
       fb_pitch = fb->common.framebuffer_pitch;
       fb_width = fb->common.framebuffer_width;
       fb_height = fb->common.framebuffer_height;
@@ -48,15 +47,13 @@ int init_vbe(void *mbi) {
 }
 
 int drawrect(int startx, int starty, int stopx, int stopy, int color) {
-  int x, y;
-
   if (baddraw(startx, starty) || baddraw(stopx, stopy)) {
     return 1;
   }
 
-  for (x = startx; x < stopx; x++) {
-    for (y = starty; y < stopy; y++) {
-      putpixel(x, y, color);
+  for (int dx = startx; dx < stopx; dx++) {
+    for (int dy = starty; dy < stopy; dy++) {
+      putpixel(dx, dy, color);
     }
   }
 
@@ -104,42 +101,40 @@ int putpixel(int x, int y, int color) {
 
 void mandelbrot(float left, float top, float xside, float yside, int color) {
   float xscale, yscale, zx, zy, cx, tempx, cy;
-  int x, y, i, j;
-  int maxx, maxy, count;
 
   cls();
 
-  // getting maximum value of x-axis of screen
-  maxx = fb_width;
+  // getting maximum value of putx-axis of screen
+  int maxx = fb_width;
 
-  // getting maximum value of y-axis of screen
-  maxy = fb_height;
+  // getting maximum value of puty-axis of screen
+  int maxy = fb_height;
 
   // setting up the xscale and yscale
   xscale = xside / maxx;
   yscale = yside / maxy;
 
   // scanning every point in that rectangular area.
-  // Each point represents a Complex number (x + yi).
+  // Each point represents a Complex number (putx + yi).
   // Iterate that complex number
-  for (y = 1; y <= maxy - 1; y++) {
-    for (x = 1; x <= maxx - 1; x++) {
+  for (int puty = 1; puty <= maxy - 1; puty++) {
+    for (int putx = 1; putx <= maxx - 1; putx++) {
       // c_real
-      cx = x * xscale + left;
+      cx = (float) putx * xscale + left;
 
       // c_imaginary
-      cy = y * yscale + top;
+      cy = (float) puty * yscale + top;
 
       // z_real
       zx = 0;
 
       // z_imaginary
       zy = 0;
-      count = 0;
+      int count = 0;
 
       // Calculate whether c(c_real + c_imaginary) belongs
       // to the Mandelbrot set or not and draw a pixel
-      // at coordinates (x, y) accordingly
+      // at coordinates (putx, puty) accordingly
       // If you reach the Maximum number of iterations
       // and If the distance from the origin is
       // greater than 2 exit the loop
@@ -157,11 +152,11 @@ void mandelbrot(float left, float top, float xside, float yside, int color) {
         zx = tempx;
 
         // Increment count
-        count = count + 1;
+        count++;
       }
 
       // To display the created fractal
-      putpixel(x, y, (count * 8) + color);
+      putpixel(putx, puty, (count * 8) + color);
     }
   }
 }
