@@ -32,8 +32,6 @@ int DARK_GRAY;
 int BG;
 int FG;
 
-int currentThemes;
-
 int init_text(int bor) {
   fg_color = FG;
   bg_color = BG;
@@ -97,7 +95,7 @@ int cls() {
 void cursor() { put('|', x, y, fg_color, bg_color); }
 
 void scroll_screen_up() {
-  int tmp = 0;
+  uint32_t tmp = 0;
   unsigned long long *vidmem = (unsigned long long *)fb_addr;
 
   while (tmp <= ((fb_width / 2) * fb_height)) {
@@ -426,11 +424,13 @@ int vprintf(const char *format, va_list list) {
       switch (specifier) {
       case 'X':
         base = 16;
+        __attribute__ ((fallthrough));
       case 'x':
         base = base == 10 ? 17 : base;
         if (altForm) {
           displayString("0x", &chars);
         }
+        __attribute__ ((fallthrough));
 
       case 'u': {
         switch (length) {
@@ -612,13 +612,14 @@ int vprintf(const char *format, va_list list) {
         break;
       }
 
-      case 'e':
+      case 'e': __attribute__ ((fallthrough));
       case 'E':
         emode = true;
+        __attribute__ ((fallthrough));
 
-      case 'f':
-      case 'F':
-      case 'g':
+      case 'f': __attribute__ ((fallthrough));
+      case 'F': __attribute__ ((fallthrough));
+      case 'g': __attribute__ ((fallthrough));
       case 'G': {
         double floating = va_arg(list, double);
 

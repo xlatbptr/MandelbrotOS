@@ -4,6 +4,7 @@ cross/
 
 # editor settings
 .vscode/
+.idea/
 
 # OS Specific file
 .DS_Store

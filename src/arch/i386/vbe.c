@@ -33,7 +33,7 @@ int init_vbe(void *mbi) {
     if (tag->type == MULTIBOOT_TAG_TYPE_FRAMEBUFFER) {
       struct multiboot_tag_framebuffer *fb =
           (struct multiboot_tag_framebuffer *) tag;
-      fb_addr = (void *) fb->common.framebuffer_addr;
+      fb_addr = (void *)(uint32_t) fb->common.framebuffer_addr;
       fb_pitch = fb->common.framebuffer_pitch;
       fb_width = fb->common.framebuffer_width;
       fb_height = fb->common.framebuffer_height;
