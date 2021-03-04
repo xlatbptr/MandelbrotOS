@@ -23,7 +23,7 @@ void cmd_mandelbrot(int argc, const char *argv[]) {
   } else if (argc = 1) {
     mandelbrot(-1.95, -1.2, 2.5, 2.5, 0x000000);
   } else {
-    printf("usage: %s [<left> <top> <xside> <yside>]\r\n", argv[0]);
+    printf("Usage: %s [<left> <top> <xside> <yside>]\r\n", argv[0]);
   }
 }
 void cmd_bsod() {
@@ -153,7 +153,7 @@ void cmd_ctheme(int argc, const char *argv[]) {
   fg_color = RED;
   printf("error: ");
   fg_color = FG;
-  printf("the selected theme doesn't exist\r\n");
+  printf("The selected theme doesn't exist\r\n");
 }
 
 static shell_command_t commands[] = {
@@ -225,6 +225,6 @@ int kshell(void *mbi, unsigned long magic) {
       }
     }
     if (! command_found)
-      printf("command not found: %s\r\n", argv[0]);
+      printf("Command not found: %s\r\n", argv[0]);
   }
 }
