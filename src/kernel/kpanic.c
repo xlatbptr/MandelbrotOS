@@ -72,7 +72,7 @@ void kpanic(char *message, int exno) {
 
   printf("Your system has been halted due to: %s Error code: %u. The system "
          "cannot be recoverd from here. Please press any key to reboot your "
-         "computer from here as it is no longer able to run. Some debug "
+         "computer. Some debug "
          "information has been included bellow.\r\n\r\n",
          message, exno);
 
