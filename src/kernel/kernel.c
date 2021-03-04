@@ -62,7 +62,7 @@ int kernel_main(unsigned long magic, unsigned long addr) {
   serial_writestring("Serial inited!\r\n");
 
   printf("%u\r\n", ide_read_sectors(1, 1, 1, 5, 1));
-
+  
   //kshell(mbi, magic);
 
   return 0;
