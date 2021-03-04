@@ -132,23 +132,21 @@ char *dyncat(char *s1, char *s2) {
 }
 
 int strcmp(char input[], char check[]) {
-  int i, result = 1;
+  int i;
   for (i = 0; input[i] != '\0' || check[i] != '\0'; i++) {
     if (input[i] != check[i]) {
-      result = 0;
-      break;
+      return 0;
     }
   }
-  return result;
+  return 1;
 }
 
 int *create_delim_dict(char *delim) {
   int *d = (int *)malloc(sizeof(int) * DICT_LEN);
   memset((void *)d, 0, sizeof(int) * DICT_LEN);
 
-  int i;
-  for (i = 0; i < strlen(delim); i++) {
-    d[delim[i]] = 1;
+  for (unsigned int i = 0; i < strlen(delim); i++) {
+    d[(int) delim[i]] = 1;
   }
   return d;
 }
@@ -171,7 +169,7 @@ char *strtok(char *str, char *delim) {
     strcpy(last, str);
   }
 
-  while (deli_dict[*last] && *last != '\0') {
+  while (deli_dict[(int) *last] && *last != '\0') {
     last++;
   }
   str = last;
@@ -180,7 +178,7 @@ char *strtok(char *str, char *delim) {
     free(to_free);
     return NULL;
   }
-  while (*last != '\0' && !deli_dict[*last]) {
+  while (*last != '\0' && !deli_dict[(int) *last]) {
     last++;
   }
 
@@ -232,9 +230,9 @@ float atof(const char *s) {
   return rez * fact;
 }
 
-int tolower(int ch) {
+char tolower(char ch) {
   if (ch >= 'A' && ch <= 'Z')
-    return ('a' + ch - 'A');
+    return 'a' + ch - 'A';
   else
     return ch;
 }

@@ -39,8 +39,8 @@ void write_serial(char a) {
   outb(PORT, a);
 }
 
-int serial_writestring(char *str) {
-  int i;
+unsigned long serial_writestring(char *str) {
+  unsigned long i;
   for (i = 0; i < strlen(str); i++) {
     write_serial(str[i]);
   }

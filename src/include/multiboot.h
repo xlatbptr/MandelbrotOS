@@ -299,7 +299,7 @@ struct multiboot_tag_framebuffer
         {
             multiboot_uint16_t framebuffer_palette_num_colors;
             struct multiboot_color framebuffer_palette[0];
-        };
+        } palette;
         struct
         {
             multiboot_uint8_t framebuffer_red_field_position;
@@ -308,8 +308,8 @@ struct multiboot_tag_framebuffer
             multiboot_uint8_t framebuffer_green_mask_size;
             multiboot_uint8_t framebuffer_blue_field_position;
             multiboot_uint8_t framebuffer_blue_mask_size;
-        };
-    };
+        } rgb;
+    } palette;
 };
 
 struct multiboot_tag_elf_sections

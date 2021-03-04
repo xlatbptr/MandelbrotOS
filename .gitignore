@@ -2,11 +2,9 @@
 iso/
 cross/
 
-# build results
-iso/
-
 # editor settings
 .vscode/
+.idea/
 
 # OS Specific file
 .DS_Store

@@ -32,8 +32,7 @@ endif
 LIBGCC=$(CROSS)/lib/gcc/$(ARCH)-elf/$(GCC_VERSION)/libgcc.a
 
 AS=nasm
-# CWARNINGS= -Wno-unused-variable -Wno-attributes -Wno-unused-parameter -Wno-pointer-to-int-cast -Wno-int-conversion
-CWARNINGS= -Wall -Wextra -pedantic
+CWARNINGS=-Wall -Wextra
 
 GCC_VERSION=10.2.0
 
@@ -70,7 +69,9 @@ STAGE2=build/stage2_eltorito
 GENISOIMAGE=genisoimage
 
 ISO=build/mandelbrotos.iso
-QEMU=qemu-system-x86_64 -cdrom $(ISO) -serial stdio
+DRIVE=myimage.raw
+#QEMU=qemu-system-x86_64 -cdrom $(ISO) -serial stdio
+QEMU=qemu-system-x86_64 -hda $(DRIVE) --cdrom $(ISO) -serial stdio
 
 .PHONY: all build clean
 
