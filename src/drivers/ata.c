@@ -35,12 +35,17 @@ void read_sectors_ATA_PIO(uint32_t target_address, uint32_t LBA,
                           uint8_t sector_count) {
 
   ATA_wait_BSY();
-  port_byte_out(0x1F6, 0xE0 | ((LBA >> 24) & 0xF));
-  port_byte_out(0x1F2, sector_count);
+  port_byte_out(0x1F6, 0xE0 | 0x40);
+  port_byte_out(0x1F1,0);
+  port_byte_out(0x1F2, sector_count >> 8);
+  port_byte_out(0x1F3, (uint8_t)LBA>>24);
+  port_byte_out(0x1F4, (uint8_t)(LBA >> 32));
+  port_byte_out(0x1F5, (uint8_t)(LBA >> 40));
+  port_byte_out(0x1F2, sector_count );
   port_byte_out(0x1F3, (uint8_t)LBA);
   port_byte_out(0x1F4, (uint8_t)(LBA >> 8));
   port_byte_out(0x1F5, (uint8_t)(LBA >> 16));
-  port_byte_out(0x1F7, 0x20); // Send the read command
+  port_byte_out(0x1F7, 0x24); // Send the read command
 
   uint16_t *target = (uint16_t *)target_address;
 
@@ -49,7 +54,7 @@ void read_sectors_ATA_PIO(uint32_t target_address, uint32_t LBA,
     ATA_wait_DRQ();
     for (int i = 0; i < 256; i++)
       target[i] = port_word_in(0x1F0);
-    target += 128;
+    target += 256;
   }
 
   target_address = target;
