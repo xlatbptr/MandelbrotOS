@@ -126,7 +126,7 @@ void cmd_ctheme(int argc, const char *argv[]) {
   if (strcmp((char *)argv[1], "help") != 0 || argc != 2) {
     printf("Usage: ctheme <theme>\r\n"
            "Available themes:\r\n");
-    for (int i = 0; i < sizeof(themes) / sizeof(char *); ++i) {
+    for (size_t i = 0; i < sizeof(themes) / sizeof(char *); ++i) {
       printf("- %s\r\n", themes[i]);
     }
     return;
