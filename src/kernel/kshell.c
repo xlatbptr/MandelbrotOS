@@ -137,7 +137,7 @@ void cmd_ctheme(int argc, const char *argv[]) {
     }
     return;
   }
-  for (unsigned long i = 0; i <= sizeof(*themes); i++) {
+  for (unsigned long i = 0; i != strlen(*themes); i++) {
     if (strcmp(themes[i], (char*)argv[1]) != 0) {
       printf("The theme is now %s\r\n", themes[i]);
       // TODO: make a struct array for all themes, this is ugly

@@ -1,4 +1,3 @@
-#include <drivers/ata.h>
 #include <drivers/serial.h>
 #include <font.h>
 #include <kernel/alloc.h>
@@ -60,46 +59,7 @@ int kernel_main(unsigned long magic, unsigned long addr) {
 
   serial_writestring("Serial inited!\r\n");
 
-  printf("reading...\r\n");
-
-  uint32_t *target;
-
-  read_sectors_ATA_PIO(target, 0x0, 1);
-
-  int i;
-  i = 0;
-  while (i < 128) {
-    printf("%x ", target[i] & 0xFF);
-    printf("%x ", (target[i] >> 8) & 0xFF);
-    i++;
-  }
-
-  printf("\r\n");
-  printf("writing 0...\r\n");
-  char bwrite[512];
-  bwrite[0] = 0xDE;
-  bwrite[1] = 0xAD;
-  bwrite[2] = 0xBE;
-  bwrite[3] = 0xEF;
-  bwrite[4] = 0x12;
-  bwrite[5] = 0x34;
-  bwrite[6] = 0x56;
-  bwrite[7] = 0x78;
-  for (i = 8; i < 512; i++) {
-    bwrite[i] = 0x0;
-  }
-  write_sectors_ATA_PIO(0x0, 0, bwrite);
-
-  printf("reading...\r\n");
-  read_sectors_ATA_PIO(target, 0x0, 0);
-  i = 0;
-  while (i < 128) {
-    printf("%x ", target[i] & 0xFF);
-    printf("%x ", (target[i] >> 8) & 0xFF);
-    i++;
-  }
-
-  // kshell(mbi, magic);
+  kshell(mbi, magic);
 
   return 0;
 }
