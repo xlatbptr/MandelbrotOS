@@ -1,109 +1,61 @@
-ARCH=i386
-CROSS=cross
-LLVM?=0
-RUNONDONE?=1
-GRUB?=0
+OS = mandelbrotos.hdd
+KERNEL = mandelbrotos.elf
 
-ifeq ($(GRUB), 1)
-	GRUB_MKRESCUE=grub2-mkrescue
-else
-	GRUB_MKRESCUE=grub-mkrescue
-endif
+AS = nasm
+ASFLAGS = -f elf64
 
-ifeq ($(LLVM), 1)
-	CC=clang
-	LD=ld.lld
-	CFLAGS=--target=i686-elf -mno-sse
-else
-	CC=$(CROSS)/bin/$(ARCH)-elf-gcc
-	LD=$(CROSS)/bin/$(ARCH)-elf-ld
-	CFLAGS=-nostartfiles
-endif
+CC = x86_64-elf-gcc
+CFLAGS := \
+	-mcmodel=kernel \
+	-ffreestanding \
+	-fno-stack-protector \
+	-fno-pic \
+	-mno-mmx \
+	-mno-80387 \
+	-mno-3dnow \
+	-mno-sse \
+	-mno-sse2 \
+	-mno-red-zone \
+	-Wall \
+	-Wextra \
+	-O2 \
+	-Isrc/include
 
-QWERTZ?=0
-ifeq ($(QWERTZ), 1)
-	CFLAGS+=-DQWERTZ
-endif
-AZERTY?=0
-ifeq ($(AZERTY), 1)
-	CFLAGS+=-DAZERTY
-endif
+LD = x86_64-elf-ld
+LDFLAGS := \
+	-static \
+	-no-pie \
+	-Tlinker.ld \
+	-nostdlib
 
-LIBGCC=$(CROSS)/lib/gcc/$(ARCH)-elf/$(GCC_VERSION)/libgcc.a
+CFILES := $(shell find src/ -name '*.c')
+ASFILES := $(shell find src/ -name '*.asm')
+OFILES := $(CFILES:.c=.o) $(ASFILES:.asm=.o)
 
-AS=nasm
-CWARNINGS=-Wall -Wextra
+.PHONY: all clean
 
-GCC_VERSION=10.2.0
+all: $(OS)
 
-CFLAGS+=-m32 -std=c99 -nostdlib -nodefaultlibs -ffreestanding -fno-builtin -fno-omit-frame-pointer $(CWARNINGS) $(CINCLUDES) -Isrc/include/
-DFLAGS=-g -DDEBUG -O0
+$(OS): $(KERNEL)
+	dd if=/dev/zero of=$@ bs=1M seek=64 count=0
+	parted -s $@ mklabel gpt
+	parted -s $@ mkpart primary 2048s 100%
+	echfs-utils -g -p0 $@ quick-format 512
+	echfs-utils -g -p0 $@ import resources/limine.cfg boot/limine.cfg
+	echfs-utils -g -p0 $@ import $< boot/$<
+	limine-install $@
 
-ASFLAGS=-f elf
-
-LDFLAGS=-melf_i386 -nostdlib -T src/arch/$(ARCH)/linker.ld -Map=build/mandelbrotos.map 
-
-CSOURCES:=\
-$(wildcard src/kernel/*.c)\
-$(wildcard src/drivers/*.c)\
-$(wildcard src/arch/$(ARCH)/*.c)\
-src/string/string.c
-
-ASOURCES:=\
-src/arch/$(ARCH)/boot.S\
-
-NASMSOURCES:=\
-src/arch/$(ARCH)/interrupts.asm\
-
-COBJECTS:=$(CSOURCES:%.c=%.o)
-AOBJECTS:=$(ASOURCES:%.S=%.ao)
-NASMOBJECTS:=$(NASMSOURCES:%.asm=%.aso)
-
-OBJS=\
-$(ARCH_OBJS)\
-$(KERNEL_OBJS)\
-
-KERNEL=build/mandelbrotos.elf
-
-STAGE2=build/stage2_eltorito
-GENISOIMAGE=genisoimage
-
-ISO=build/mandelbrotos.iso
-DRIVE=myimage.raw
-#QEMU=qemu-system-x86_64 -cdrom $(ISO) -serial stdio
-QEMU=qemu-system-x86_64 -hda $(DRIVE) --cdrom $(ISO) -serial stdio
-
-.PHONY: all build clean
-
-all: $(ISO)
-
-$(ISO): $(KERNEL)
-	mkdir -p iso/boot/grub
-	cp $(KERNEL) iso/boot/$(notdir $(KERNEL))
-	cp resources/grub.cfg iso/boot/grub
-	$(GRUB_MKRESCUE) -o $(ISO) iso
-ifeq ($(RUNONDONE), 1)
-	$(QEMU)
-endif
-
-$(KERNEL): $(COBJECTS) $(AOBJECTS) $(NASMOBJECTS)
-	mkdir -p build
-	$(LD) $(LDFLAGS) $(AOBJECTS) $(COBJECTS) $(NASMOBJECTS) $(LIBGCC) -o $@
+$(KERNEL): $(OFILES)
+	$(LD) $(LDFLAGS) $^ -o $@
 
 %.o: %.c
-	$(CC) $(CFLAGS) -o $@ -c $<
+	$(CC) $(CFLAGS) -c $< -o $@
 
-%.ao: %.S
-	$(CC) $(CFLAGS) -o $@ -c $<
-
-%.aso: %.asm
-	$(AS) $(ASFLAGS) -o $@ $<
-
-qemu: $(ISO) 
-	$(QEMU)
+%.o: %.asm
+	$(AS) $(ASFLAGS) $< -o $@
 
 clean:
-	rm -rf iso
-	rm -rf build
-	find src/ -type f -name "*o" -delete
-	rm -f $(ISO)
+	rm -rf $(OFILES) $(KERNEL) $(OS)
+
+run:
+	qemu-system-x86_64 -hda $(OS) -enable-kvm
