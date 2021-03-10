@@ -25,5 +25,7 @@ int kernel_main(struct stivale2_struct *bootloader_info) {
     return 1;
   }
 
+  printf("%s", "Hello world!");
+
   return 0;
 }

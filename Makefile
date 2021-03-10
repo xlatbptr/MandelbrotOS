@@ -33,9 +33,7 @@ CFILES := $(shell find src/ -name '*.c')
 ASFILES := $(shell find src/ -name '*.asm')
 OFILES := $(CFILES:.c=.o) $(ASFILES:.asm=.o)
 
-.PHONY: clean all qemu
-
-all: $(OS)
+all: clean $(OS) qemu
 
 $(OS): $(KERNEL)
 	@ echo "[DD] HDD"
