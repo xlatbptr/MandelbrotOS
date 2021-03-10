@@ -6,7 +6,7 @@ set -x
 TARGET=x86_64-elf
 BINUTILSVERSION=2.33.1
 GCCVERSION=9.2.0
-PREFIX="$(pwd)/$TARGET-cross"
+PREFIX="$(pwd)/cross"
 
 if [ -z "$MAKEFLAGS" ]; then
 	MAKEFLAGS="$1"

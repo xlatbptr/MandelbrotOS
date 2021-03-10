@@ -1,27 +1,28 @@
+KVM=0
+
+LD = cross/bin/x86_64-elf-ld
+CC = cross/bin/x86_64-elf-gcc
+AS = nasm
+LIBGCC=cross/lib/gcc/x86_64-elf/9.2.0/libgcc.a
+
+ifeq ($(KVM), 1)
+	QEMU = qemu-system-x86_64 -hda $(OS) -enable-kvm
+else
+	QEMU = qemu-system-x86_64 -hda $(OS)
+endif
+
 OS = mandelbrotos.hdd
 KERNEL = mandelbrotos.elf
 
-AS = nasm
 ASFLAGS = -f elf64
 
-CC = x86_64-elf-gcc
 CFLAGS := \
 	-mcmodel=kernel \
 	-ffreestanding \
-	-fno-stack-protector \
-	-fno-pic \
-	-mno-mmx \
-	-mno-80387 \
-	-mno-3dnow \
-	-mno-sse \
-	-mno-sse2 \
-	-mno-red-zone \
+	-Isrc/include \
 	-Wall \
 	-Wextra \
-	-O2 \
-	-Isrc/include
 
-LD = x86_64-elf-ld
 LDFLAGS := \
 	-static \
 	-no-pie \
@@ -45,7 +46,7 @@ $(OS): $(KERNEL)
 	echfs-utils -g -p0 $@ import $< boot/$<
 	limine-install $@
 
-$(KERNEL): $(OFILES)
+$(KERNEL): $(OFILES) $(LIBGCC)
 	$(LD) $(LDFLAGS) $^ -o $@
 
 %.o: %.c
@@ -57,5 +58,5 @@ $(KERNEL): $(OFILES)
 clean:
 	rm -rf $(OFILES) $(KERNEL) $(OS)
 
-run:
-	qemu-system-x86_64 -hda $(OS) -enable-kvm
+qemu:
+	$(QEMU)
