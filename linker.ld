@@ -1,7 +1,7 @@
 ENTRY(_start)
 
 SECTIONS {
-    . = 0xffffffff80200000; /* 1 MB in the higher half */
+    . = 0xffffffff80200000; /* 2 MB in the higher half */
 
     .stivale2hdr : ALIGN(4K) {
         KEEP(*.stivale2hdr)

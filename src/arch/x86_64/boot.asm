@@ -19,6 +19,17 @@ fb_tag:
   .fb_height: dw 0 ; Best size
   .fb_bpp: dw 32 ; Do not support less than 32 bpp
 
+set_sse:
+  ; Taken from OSDEV adjusted for 64 (Changed eax register to rax)
+  mov rax, cr0
+  and ax, 0xFFFB		;clear coprocessor emulation CR0.EM
+  or ax, 0x2			;set coprocessor monitoring  CR0.MP
+  mov cr0, rax
+  mov rax, cr4
+  or ax, 3 << 9		;set CR4.OSFXSR and CR4.OSXMMEXCPT at the same time
+  mov cr4, rax
+  ret
+
 ; Enable MTRR write-combining for the framebuffer to speed up
 ; writes into the framebuffer
 fb_mtrr:
@@ -69,6 +80,8 @@ iretq
   mov fs, ax
   mov gs, ax
   mov ss, ax
+
+  call set_sse
 
   call kernel_main
   hlt

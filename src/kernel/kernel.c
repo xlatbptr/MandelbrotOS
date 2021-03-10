@@ -7,6 +7,7 @@
 #include <string.h>
 
 int kernel_main(struct stivale2_struct *bootloader_info) {
+
   // First get the framebuffer
   struct stivale2_tag *tag;
   if ((tag = stivale2_get_tag(bootloader_info,

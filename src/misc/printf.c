@@ -31,7 +31,7 @@
 // define the default floating point precision
 // default: 6 digits
 #ifndef PRINTF_DEFAULT_FLOAT_PRECISION
-#define PRINTF_DEFAULT_FLOAT_PRECISION 6U
+#define PRINTF_DEFAULT_FLOAT_PRECISION 12U
 #endif
 
 // define the largest float suitable to print with %f
