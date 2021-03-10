@@ -33,30 +33,42 @@ CFILES := $(shell find src/ -name '*.c')
 ASFILES := $(shell find src/ -name '*.asm')
 OFILES := $(CFILES:.c=.o) $(ASFILES:.asm=.o)
 
-.PHONY: all clean
+.PHONY: clean all qemu
 
 all: $(OS)
 
 $(OS): $(KERNEL)
-	dd if=/dev/zero of=$@ bs=1M seek=64 count=0
-	parted -s $@ mklabel gpt
-	parted -s $@ mkpart primary 2048s 100%
-	echfs-utils -g -p0 $@ quick-format 512
-	echfs-utils -g -p0 $@ import resources/limine.cfg boot/limine.cfg
-	echfs-utils -g -p0 $@ import $< boot/$<
-	limine-install $@
+	@ echo "[DD] HDD"
+	@ dd if=/dev/zero of=$@ bs=1M seek=64 count=0
+	@ echo "[PARTED] GPT"
+	@ parted -s $@ mklabel gpt
+	@ echo "[PARTED] Partion"
+	@ parted -s $@ mkpart primary 2048s 100%
+	@ echo "[ECHFS] Format"
+	@ echfs-utils -g -p0 $@ quick-format 512
+	@ echo "[ECHFS] resources/limine.cfg"
+	@ echfs-utils -g -p0 $@ import resources/limine.cfg boot/limine.cfg
+	@ echo "[ECHFS] boot/"
+	@ echfs-utils -g -p0 $@ import $< boot/$<
+	@ echo "[LIMINE] Install"
+	@ limine-install $@
 
 $(KERNEL): $(OFILES) $(LIBGCC)
-	$(LD) $(LDFLAGS) $^ -o $@
+	@ echo "[LD] $^"
+	@ $(LD) $(LDFLAGS) $^ -o $@
 
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	@ echo "[CC] $<"
+	@ $(CC) $(CFLAGS) -c $< -o $@
 
 %.o: %.asm
-	$(AS) $(ASFLAGS) $< -o $@
+	@ echo "[AS] $<" 
+	@ $(AS) $(ASFLAGS) $< -o $@
 
 clean:
-	rm -rf $(OFILES) $(KERNEL) $(OS)
+	@ echo "[CLEAN]"
+	@ rm -rf $(OFILES) $(KERNEL) $(OS)
 
 qemu:
-	$(QEMU)
+	@ echo "[QEMU]" 
+	@ $(QEMU)
