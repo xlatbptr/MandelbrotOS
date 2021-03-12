@@ -5,6 +5,7 @@
 #include <printf.h>
 #include <stdint.h>
 #include <string.h>
+#include <kernel/idt.h>
 
 int kernel_main(struct stivale2_struct *bootloader_info) {
 
@@ -25,7 +26,9 @@ int kernel_main(struct stivale2_struct *bootloader_info) {
     return 1;
   }
 
-  printf("%s", "Hello world!");
+  init_idt();
+
+  //printf("%s%f", "Hello world!\r\n", 3.14159);
 
   return 0;
 }
