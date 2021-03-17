@@ -16,7 +16,12 @@ echfs_t echfs_get_fs(device_t device) {
 }
 
 uint64_t echfs_load_block(device_t device, echfs_t fs, uint8_t *buffer, uint64_t block) {
+  uint64_t next_block;
+  device.read(device, fs.alloc_offset + block * sizeof(uint64_t), (uint64_t *)(&next_block), sizeof(uint64_t));
 
+  device.read(device, block * fs.block_size, buffer, fs.block_size);
+
+  return next_block;
 }
 
 echfs_entry_t echfs_find(device_t device, echfs_t fs, uint64_t dir, const char *name) {
@@ -33,8 +38,17 @@ echfs_entry_t echfs_find(device_t device, echfs_t fs, uint64_t dir, const char *
   return entry;
 }
 
-int echfs_load(device_t device, echfs_t fs, echfs_entry_t file, uint8_t *buffer) {
+int echfs_read(device_t device, echfs_t fs, echfs_entry_t file, uint8_t *buffer) {
+  if (!file.type || !(file.perms & ECHFS_READ_MASK)) return 0;
 
+  uint64_t block = file.blk_id;
+
+  while (block && block < 0xFFFFFFFFFFFFFFF0) {
+    block = echfs_load_block(device, fs, buffer, block);
+    buffer += fs.block_size;
+  }
+
+  return 1;
 }
 
 uint64_t echfs_get_size(device_t device, echfs_t fs, echfs_entry_t file) {

@@ -42,12 +42,11 @@ struct flatfs_header_t {
 } __attribute__((packed));
 
 struct flatfs_data_t {
-  char name[480];
+  char name[460];
 
   uint64_t size;
-  uint32_t date;
-
-  uint16_t metadata;
+  uint64_t atime, mtime, ctime;
+  uint16_t attr;
 } __attribute__((packed));
 
 // Returns the flat_fs header on that device, for use on all the other functions
@@ -56,7 +55,10 @@ flatfs_t flatfs_get_fs(device_t device);
 // Looks for NAME on directory DIR on FS, returns header, type=FLAT_TYPE_NULL if failed
 flatfs_header_t flatfs_find(device_t device, flatfs_t fs, uint64_t dir, const char *name);
 
-// Loads file at HEADER from FS to BUFFER, returns 1 if success
-int flatfs_load(device_t device, flatfs_t fs, flatfs_header_t header, uint8_t *buffer);
+// Reads file at HEADER from FS to BUFFER, returns 1 if success
+int flatfs_read(device_t device, flatfs_t fs, flatfs_header_t header, uint8_t *buffer);
+
+// Returns size of file at HEADER(you can also use the flatfs_header_t struct), or 0 if error
+uint64_t flatfs_get_size(device_t device, flatfs_t fs, flatfs_header_t header);
 
 #endif // !__FLATFS_H__

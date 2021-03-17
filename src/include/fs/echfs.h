@@ -4,6 +4,10 @@
 #include <kernel/device.h>
 #include <stdint.h>
 
+#define ECHFS_READ_MASK  (0b0000000100100100)
+#define ECHFS_WRITE_MASK (0b0000000010010010)
+#define ECHFS_EXEC_MASK  (0b0000000001001001)
+
 #define ECHFS_ROOT_DIR_ID (0xFFFFFFFFFFFFFFFF)
 
 #define ECHFS_TYPE_NULL (0xFF)
@@ -64,8 +68,8 @@ uint64_t echfs_load_block(device_t device, echfs_t fs, uint8_t *buffer, uint64_t
 // Looks for NAME on directory DIR(ECHFS_ROOT_DIR_ID if root dir.) on FS, returns entry, type=0xFF if failed
 echfs_entry_t echfs_find(device_t device, echfs_t fs, uint64_t dir, const char *name);
 
-// Loads FILE from FS to BUFFER, returns 1 if success
-int echfs_load(device_t device, echfs_t fs, echfs_entry_t file, uint8_t *buffer);
+// Reads FILE from FS to BUFFER, returns 1 if success
+int echfs_read(device_t device, echfs_t fs, echfs_entry_t file, uint8_t *buffer);
 
 // Returns size of ENTRY(you can also use the echfs_entry_t struct), or 0 if error
 uint64_t echfs_get_size(device_t device, echfs_t fs, echfs_entry_t file);
