@@ -845,6 +845,7 @@ static int _vsnprintf(out_fct_type out, char *buffer, const size_t maxlen,
 
 ///////////////////////////////////////////////////////////////////////////////
 
+// Print with standard printf formating
 int printf(const char *format, ...) {
   va_list va;
   va_start(va, format);
@@ -854,6 +855,7 @@ int printf(const char *format, ...) {
   return ret;
 }
 
+// Output formated result into buffer
 int sprintf_(char *buffer, const char *format, ...) {
   va_list va;
   va_start(va, format);

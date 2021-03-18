@@ -1,9 +1,9 @@
-KVM=0
+KVM = 0
 
 LD = cross/bin/x86_64-elf-ld
 CC = cross/bin/x86_64-elf-gcc
 AS = nasm
-LIBGCC=cross/lib/gcc/x86_64-elf/9.2.0/libgcc.a
+LIBGCC = cross/lib/gcc/x86_64-elf/9.2.0/libgcc.a
 
 ifeq ($(KVM), 1)
 	QEMU = qemu-system-x86_64 -hda $(OS) -enable-kvm
@@ -22,6 +22,7 @@ CFLAGS := \
 	-Isrc/include \
 	-Wall \
 	-Wextra \
+	-lm \
 
 LDFLAGS := \
 	-static \
@@ -36,7 +37,7 @@ OFILES := $(CFILES:.c=.o) $(ASFILES:.asm=.o)
 all: clean $(OS) qemu
 
 $(OS): $(KERNEL)
-	@ echo "[DD] HDD"
+	@ echo "[DD] $@"
 	@ dd if=/dev/zero of=$@ bs=1M seek=64 count=0
 	@ echo "[PARTED] GPT"
 	@ parted -s $@ mklabel gpt

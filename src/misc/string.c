@@ -15,6 +15,7 @@ void *memset(void *b, int c, int len) {
   return (b);
 }
 
+// 
 void memcpy(void *dest, void *src, size_t n) {
   // Typecast src and dest addresses to (char *)
   char *csrc = (char *)src;
@@ -116,21 +117,6 @@ char *itoa(int value, char *str, int base) {
   return rc;
 }
 
-// char *dyncat(char *s1, char *s2) {
-//   char *toret, *mallocd;
-
-//   mallocd = (char *)malloc(1 + strlen(s1) + strlen(s2));
-
-//   strcpy(mallocd, s1);
-//   strcat(mallocd, s2);
-
-//   toret = mallocd;
-
-//   free(mallocd);
-
-//   return toret;
-// }
-
 int strcmp(char input[], char check[]) {
   int i;
   for (i = 0; input[i] != '\0' || check[i] != '\0'; i++) {
@@ -141,54 +127,7 @@ int strcmp(char input[], char check[]) {
   return 1;
 }
 
-// int *create_delim_dict(char *delim) {
-//   int *d = (int *)malloc(sizeof(int) * DICT_LEN);
-//   memset((void *)d, 0, sizeof(int) * DICT_LEN);
-
-//   for (unsigned int i = 0; i < strlen(delim); i++) {
-//     d[(int) delim[i]] = 1;
-//   }
-//   return d;
-// }
-
-// char *strtok(char *str, char *delim) {
-
-//   static char *last, *to_free;
-//   int *deli_dict = create_delim_dict(delim);
-
-//   if (!deli_dict) {
-//     return NULL;
-//   }
-
-//   if (str) {
-//     last = (char *)malloc(strlen(str) + 1);
-//     if (!last) {
-//       free(deli_dict);
-//     }
-//     to_free = last;
-//     strcpy(last, str);
-//   }
-
-//   while (deli_dict[(int) *last] && *last != '\0') {
-//     last++;
-//   }
-//   str = last;
-//   if (*last == '\0') {
-//     free(deli_dict);
-//     free(to_free);
-//     return NULL;
-//   }
-//   while (*last != '\0' && !deli_dict[(int) *last]) {
-//     last++;
-//   }
-
-//   *last = '\0';
-//   last++;
-
-//   free(deli_dict);
-//   return str;
-// }
-
+// Custom function. Count amount of whitespace in a string
 int wspaceamount(char *a) {
   int i = 0, count = 0;
 

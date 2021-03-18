@@ -3,6 +3,7 @@
 #include <kernel/text.h>
 #include <stdint.h>
 
+// Definitions for all the colors of the kernel
 uint32_t RED;
 uint32_t DARK_RED;
 uint32_t GREEN;
@@ -22,13 +23,18 @@ uint32_t DARK_GRAY;
 uint32_t BG;
 uint32_t FG;
 
+// Foreground and background colors
 uint32_t fg_color;
 uint32_t bg_color;
 
+// Where to draw the current character
 int x_pos_pixel;
 int y_pos_pixel;
+
+// How far the text should be spaced off the wall
 int border;
 
+// Set colors for kernel
 int init_color(int red, int dred, int green, int dgreen, int yellow,
                int dyellow, int blue, int dblue, int magenta, int dmagenta,
                int cyan, int dcyan, int white, int black, int gray, int dgray,
@@ -55,6 +61,7 @@ int init_color(int red, int dred, int green, int dgreen, int yellow,
   return 0;
 }
 
+// Initilize text printing
 int init_text(int border_) {
   fg_color = FG;
   bg_color = BG;
@@ -69,6 +76,7 @@ int init_text(int border_) {
   return 0;
 }
 
+// Clear screen
 void cls() {
   x_pos_pixel = border;
   y_pos_pixel = border;
@@ -77,6 +85,9 @@ void cls() {
   }
 }
 
+// FIXME: Fix this bad code
+
+// Remove character and move 1 space back
 void backspace() {
   if (x_pos_pixel >= GLYPH_WIDTH + 1) {
     putc(' ', x_pos_pixel, y_pos_pixel, bg_color, bg_color);
@@ -91,6 +102,7 @@ void backspace() {
   }
 }
 
+// Scroll screen up the length of one character
 void scroll_screen_up() {
   for (uint32_t i = 1; i <= framebuffer_width * framebuffer_height; i++) {
     framebuffer[i] = framebuffer[i + (framebuffer_width * (GLYPH_WIDTH + 1))];
@@ -101,6 +113,7 @@ void scroll_screen_up() {
       framebuffer_width, framebuffer_height, bg_color);
 }
 
+// Put 1 char at x y position (No escape sequeneces)
 void putc(char ch, int x, int y, uint32_t foreground_color,
           uint32_t background_color) {
   uint8_t *bitmap = (uint8_t *)char_font[ch % 128];
@@ -115,6 +128,7 @@ void putc(char ch, int x, int y, uint32_t foreground_color,
   }
 }
 
+// Put a character automatically at place (With escapes)
 void putchar(char string) {
   if ((uint32_t)x_pos_pixel > framebuffer_width - border) {
     x_pos_pixel = border;
@@ -144,6 +158,7 @@ void putchar(char string) {
   }
 }
 
+// Put string (With escapes implemented)
 void puts(const char *string) {
   while (*string != 0) {
     putchar(*string++);

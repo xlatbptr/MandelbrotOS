@@ -13,7 +13,7 @@ typedef struct idt_entry {
 
 typedef struct idt_ptr {
   uint16_t limit;
-  uint32_t base;
+  uint64_t base;
 } __attribute__((packed)) idt_ptr_t;
 
 extern idt_entry_t idt[256];
