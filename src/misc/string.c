@@ -131,13 +131,11 @@ char *itoa(int value, char *str, int base) {
 //   return toret;
 // }
 
-int strcmp(char input[], char check[]) {
-  int i;
-  for (i = 0; input[i] != '\0' || check[i] != '\0'; i++) {
-    if (input[i] != check[i]) {
-      return 0;
-    }
+int strcmp(const char *input, const char *check) {
+  for (int i = 0; input[i] && check[i]; i++) {
+    if (input[i] != check[i]) return 0;
   }
+
   return 1;
 }
 
