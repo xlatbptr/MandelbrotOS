@@ -49,6 +49,8 @@ $(OS): $(KERNEL)
 	@ echfs-utils -g -p0 $@ import resources/limine.cfg boot/limine.cfg
 	@ echo "[ECHFS] boot/"
 	@ echfs-utils -g -p0 $@ import $< boot/$<
+	@ echo "[ECHFS] foo.txt(just for testing)"
+	@ echfs-utils -g -p0 $@ import resources/foo.txt tee/bar/foo.txt
 	@ echo "[LIMINE] Install"
 	@ limine-install $@
 
@@ -61,7 +63,7 @@ $(KERNEL): $(OFILES) $(LIBGCC)
 	@ $(CC) $(CFLAGS) -c $< -o $@
 
 %.o: %.asm
-	@ echo "[AS] $<" 
+	@ echo "[AS] $<"
 	@ $(AS) $(ASFLAGS) $< -o $@
 
 clean:
@@ -69,5 +71,5 @@ clean:
 	@ rm -rf $(OFILES) $(KERNEL) $(OS)
 
 qemu:
-	@ echo "[QEMU]" 
+	@ echo "[QEMU]"
 	@ $(QEMU)

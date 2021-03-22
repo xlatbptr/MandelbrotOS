@@ -4,11 +4,17 @@
 #include <stdint.h>
 
 typedef struct idt_entry {
-  uint16_t base_lo;
+  uint16_t base_low;
   uint16_t sel;
-  uint8_t always0;
+
+  uint8_t padding_1;
+
   uint8_t flags;
-  uint16_t base_hi;
+  uint16_t base_mid;
+
+  // 64-bit extension
+  uint32_t base_high;
+  uint32_t padding_2;
 } __attribute__((packed)) idt_entry_t;
 
 typedef struct idt_ptr {
