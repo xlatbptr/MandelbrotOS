@@ -16,6 +16,8 @@ int kernel_main(struct stivale2_struct *bootloader_info) {
   struct stivale2_tag *tag;
   struct stivale2_tag *mem;
 
+  
+
   if ((tag = stivale2_get_tag(bootloader_info,
                               STIVALE2_STRUCT_TAG_FRAMEBUFFER_ID)) &&
       (mem =
