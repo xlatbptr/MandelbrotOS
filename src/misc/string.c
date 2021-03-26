@@ -15,7 +15,6 @@ void *memset(void *b, int c, int len) {
   return (b);
 }
 
-//
 void memcpy(void *dest, void *src, size_t n) {
   // Typecast src and dest addresses to (char *)
   char *csrc = (char *)src;
@@ -116,21 +115,6 @@ char *itoa(int value, char *str, int base) {
   }
   return rc;
 }
-
-// char *dyncat(char *s1, char *s2) {
-//   char *toret, *mallocd;
-
-//   mallocd = (char *)malloc(1 + strlen(s1) + strlen(s2));
-
-//   strcpy(mallocd, s1);
-//   strcat(mallocd, s2);
-
-//   toret = mallocd;
-
-//   free(mallocd);
-
-//   return toret;
-// }
 
 int strcmp(const char *input, const char *check) {
   for (int i = 0; input[i] && check[i]; i++) {

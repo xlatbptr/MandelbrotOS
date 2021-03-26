@@ -66,9 +66,12 @@ int ata_pio_read(uint16_t *target, uint64_t lba, uint16_t sectors,
         return 2;
       }
     }
-    for (int j = 0; j < 256; j++)
-      target[j] = inw(device->base_port + ATA_PORT_DATA);
-    target += 256;
+    for (int j = 0; j < 512; j+=2){
+      uint16_t value = inw(device->base_port + ATA_PORT_DATA);
+      target[j] = value & 0xFF;
+      target[j+1] = (value >> 8) & 0xFF;
+    }
+    target += 512;
   }
   return 0;
 }
