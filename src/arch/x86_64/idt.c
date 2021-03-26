@@ -18,7 +18,7 @@ int init_idt() {
   idtp.limit = (sizeof(idt_entry_t) * 256) - 1;
   idtp.base = (uint64_t)&idt;
 
-  __asm__ volatile("lidtq (%0)" :: "r"(&idtp));
+  __asm__ volatile("lidtq (%0)" ::"r"(&idtp));
 
   return 0;
 }

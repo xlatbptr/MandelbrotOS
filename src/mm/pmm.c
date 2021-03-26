@@ -3,7 +3,7 @@
 #include <printf.h>
 #include <stddef.h>
 
-//TODO: Finish writing this damn thing already
+// TODO: Finish writing this damn thing already
 
 // Init physical memory management
 void pmm_init(struct stivale2_mmap_entry *memory_map, size_t memory_entries) {

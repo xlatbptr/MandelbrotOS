@@ -277,19 +277,22 @@ static size_t _etoa(out_fct_type out, char *buffer, size_t idx, size_t maxlen,
                     double value, unsigned int prec, unsigned int width,
                     unsigned int flags);
 
-static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, double value, unsigned int prec, unsigned int width, unsigned int flags)
-{
+static size_t _ftoa(out_fct_type out, char *buffer, size_t idx, size_t maxlen,
+                    double value, unsigned int prec, unsigned int width,
+                    unsigned int flags) {
   const size_t start_idx = idx;
 
   char buf[PRINTF_FTOA_BUFFER_SIZE];
-  size_t len  = 0U;
+  size_t len = 0U;
   double diff = 0.0;
 
   // if input is larger than thres_max, revert to exponential
   const double thres_max = (double)0x7FFFFFFF;
 
   // powers of 10
-  static const double pow10[] = { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000 };
+  static const double pow10[] = {1,         10,        100,     1000,
+                                 10000,     100000,    1000000, 10000000,
+                                 100000000, 1000000000};
 
   // test for NaN
   if (value != value) {
@@ -328,16 +331,16 @@ static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, d
       frac = 0;
       ++whole;
     }
-  }
-  else if (diff < 0.5) {
-  }
-  else if ((frac == 0U) || (frac & 1U)) {
+  } else if (diff < 0.5) {
+  } else if ((frac == 0U) || (frac & 1U)) {
     // if halfway, round up if odd OR if last digit is 0
     ++frac;
   }
 
-  // TBD: for very large numbers switch back to native sprintf for exponentials. Anyone want to write code to replace this?
-  // Normal printf behavior is to print EVERY whole number digit which can be 100s of characters overflowing your buffers == bad
+  // TBD: for very large numbers switch back to native sprintf for exponentials.
+  // Anyone want to write code to replace this? Normal printf behavior is to
+  // print EVERY whole number digit which can be 100s of characters overflowing
+  // your buffers == bad
   if (value > thres_max) {
     return 0U;
   }
@@ -349,8 +352,7 @@ static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, d
       // 1.5 -> 2, but 2.5 -> 2
       ++whole;
     }
-  }
-  else {
+  } else {
     unsigned int count = prec;
     // now do fractional part, as an unsigned number
     while (len < PRINTF_FTOA_BUFFER_SIZE) {
@@ -391,11 +393,9 @@ static size_t _ftoa(out_fct_type out, char* buffer, size_t idx, size_t maxlen, d
   if (len < PRINTF_FTOA_BUFFER_SIZE) {
     if (negative) {
       buf[len++] = '-';
-    }
-    else if (flags & FLAGS_PLUS) {
-      buf[len++] = '+';  // ignore the space if the '+' exists
-    }
-    else if (flags & FLAGS_SPACE) {
+    } else if (flags & FLAGS_PLUS) {
+      buf[len++] = '+'; // ignore the space if the '+' exists
+    } else if (flags & FLAGS_SPACE) {
       buf[len++] = ' ';
     }
   }

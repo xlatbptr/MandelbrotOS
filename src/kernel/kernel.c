@@ -1,7 +1,9 @@
 #include <boot/stivale2.h>
+#include <drivers/ata.h>
 #include <font.h>
 #include <kernel/fb.h>
 #include <kernel/idt.h>
+#include <kernel/isr.h>
 #include <kernel/text.h>
 #include <mm/pmm.h>
 #include <printf.h>
@@ -12,9 +14,14 @@
 
 // Kernel entry
 int kernel_main(struct stivale2_struct *bootloader_info) {
-  // First get the framebuffer
+  // Stivale atgs
   struct stivale2_tag *tag;
   struct stivale2_tag *mem;
+
+  // ATA Primary drive
+  drive_t drive;
+  drive.base_port = ATA_PRIMARY_PORT;
+  drive.base_control_port = ATA_PRIMARY_CONTROL_PORT;
 
   if ((tag = stivale2_get_tag(bootloader_info,
                               STIVALE2_STRUCT_TAG_FRAMEBUFFER_ID)) &&
@@ -24,7 +31,7 @@ int kernel_main(struct stivale2_struct *bootloader_info) {
     struct stivale2_struct_tag_framebuffer *framebuffer_info =
         (struct stivale2_struct_tag_framebuffer *)tag;
     struct stivale2_struct_tag_memmap *memory_map =
-        (struct stivale2_struct_tag_memmap *)mem; // < Check here!
+        (struct stivale2_struct_tag_memmap *)mem;
 
     init_fb((void *)framebuffer_info->framebuffer_addr,
             framebuffer_info->framebuffer_width,
