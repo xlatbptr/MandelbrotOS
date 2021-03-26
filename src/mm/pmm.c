@@ -3,7 +3,31 @@
 #include <printf.h>
 #include <stddef.h>
 
-// TODO: Finish writing this damn thing already
+// Simple watermark allocator. Works 99% of the time until you run out of memory (aka. never).
+
+void * bottom;
+
+void * pmalloc(size_t size) {
+  void * ptr = bottom;
+  bottom = (void *)((uintptr_t)bottom + size);
+  return ptr;
+}
+
+void * prealloc(void * ptr, size_t size) {
+  if(ptr == NULL) {
+    return pmalloc(size);
+  }
+  
+  // We just allocate again...
+  void * new_ptr = pmalloc(size);
+  memcpy(ptr,new_ptr,size);
+  return new_ptr;
+}
+
+void pfree(void * ptr) {
+  // We don't actually free!
+  return;
+}
 
 // Init physical memory management
 void pmm_init(struct stivale2_mmap_entry *memory_map, size_t memory_entries) {
@@ -20,5 +44,6 @@ void pmm_init(struct stivale2_mmap_entry *memory_map, size_t memory_entries) {
 
     if (top > highest_page)
       highest_page = top;
+    bottom = entry.base;
   }
 }
