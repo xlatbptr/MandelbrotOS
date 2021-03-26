@@ -134,7 +134,8 @@ char *itoa(int value, char *str, int base) {
 
 int strcmp(const char *input, const char *check) {
   for (int i = 0; input[i] && check[i]; i++) {
-    if (input[i] != check[i]) return 0;
+    if (input[i] != check[i])
+      return 0;
   }
 
   return 1;

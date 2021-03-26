@@ -4,21 +4,21 @@
 #include <kernel/device.h>
 #include <stdint.h>
 
-#define FLAT_TYPE_NULL      (0x0000)
-#define FLAT_TYPE_FREE      (0xFFFF)
-#define FLAT_TYPE_FILE      (0x0080)
-#define FLAT_TYPE_DIR       (0x0081)
+#define FLAT_TYPE_NULL (0x0000)
+#define FLAT_TYPE_FREE (0xFFFF)
+#define FLAT_TYPE_FILE (0x0080)
+#define FLAT_TYPE_DIR (0x0081)
 #define FLAT_TYPE_FILE_LINK (0x0082)
-#define FLAT_TYPE_DIR_LINK  (0x0083)
-#define FLAT_TYPE_ROOT_DIR  (0x00FF)
-#define FLAT_TYPE_DATA      (0xFF00)
+#define FLAT_TYPE_DIR_LINK (0x0083)
+#define FLAT_TYPE_ROOT_DIR (0x00FF)
+#define FLAT_TYPE_DATA (0xFF00)
 
 // Used for checking if it has extra data on it
 #define FLAT_TYPE_MASK (0b1111111101110000)
 
-#define FLAT_META_READ   (0b0000000000000001)
-#define FLAT_META_WRITE  (0b0000000000000010)
-#define FLAT_META_EXEC   (0b0000000000000100)
+#define FLAT_META_READ (0b0000000000000001)
+#define FLAT_META_WRITE (0b0000000000000010)
+#define FLAT_META_EXEC (0b0000000000000100)
 #define FLAT_META_SYSTEM (0b0000000000001000)
 
 #define NULL_64 (0x0000000000000000)
@@ -59,9 +59,11 @@ flatfs_t flatfs_get_fs(device_t device);
 flatfs_header_t flatfs_get_header(device_t device, uint64_t header_ptr);
 
 // Saves HEADER to the specified pointer HEADER_PTR on FS, returns 1 if success
-int flatfs_set_header(device_t device, uint64_t header_ptr, flatfs_header_t header);
+int flatfs_set_header(device_t device, uint64_t header_ptr,
+                      flatfs_header_t header);
 
-// Merges block with header at HEADER_PTR with consecutive block, and returns 1 if success
+// Merges block with header at HEADER_PTR with consecutive block, and returns 1
+// if success
 int flatfs_merge(device_t device, uint64_t header_ptr);
 
 int flatfs_free(device_t device, uint64_t header_ptr);
@@ -77,7 +79,8 @@ int flatfs_delete(device_t device, uint64_t dir, const char *name);
 // Reads file at HEADER from FS to BUFFER, returns 1 if success
 int flatfs_read(device_t device, uint64_t header_ptr, uint8_t *buffer);
 
-// Returns size of file at HEADER(you can also use the flatfs_header_t struct), or 0 if error
+// Returns size of file at HEADER(you can also use the flatfs_header_t struct),
+// or 0 if error
 uint64_t flatfs_get_size(device_t device, uint64_t header_ptr);
 
 #endif // !__FLATFS_H__

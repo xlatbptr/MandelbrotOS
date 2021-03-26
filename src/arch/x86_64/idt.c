@@ -1,5 +1,5 @@
-#include <string.h>
 #include <kernel/idt.h>
+#include <string.h>
 
 // Variable definitions
 idt_entry_t idt[256];
