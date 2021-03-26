@@ -2,6 +2,7 @@
 #include <mm/pmm.h>
 #include <printf.h>
 #include <stddef.h>
+#include <string.h>
 
 // Simple watermark allocator. Works 99% of the time until you run out of memory (aka. never).
 
