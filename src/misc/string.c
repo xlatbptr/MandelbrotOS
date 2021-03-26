@@ -117,13 +117,26 @@ char *itoa(int value, char *str, int base) {
   return rc;
 }
 
-int strcmp(char input[], char check[]) {
-  int i;
-  for (i = 0; input[i] != '\0' || check[i] != '\0'; i++) {
-    if (input[i] != check[i]) {
-      return 0;
-    }
+// char *dyncat(char *s1, char *s2) {
+//   char *toret, *mallocd;
+
+//   mallocd = (char *)malloc(1 + strlen(s1) + strlen(s2));
+
+//   strcpy(mallocd, s1);
+//   strcat(mallocd, s2);
+
+//   toret = mallocd;
+
+//   free(mallocd);
+
+//   return toret;
+// }
+
+int strcmp(const char *input, const char *check) {
+  for (int i = 0; input[i] && check[i]; i++) {
+    if (input[i] != check[i]) return 0;
   }
+
   return 1;
 }
 
